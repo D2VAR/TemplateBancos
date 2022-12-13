@@ -42,9 +42,8 @@ public class UsuarioService {
         return usuario;
     }
 
-//    public void delete(UUID id) {
-//       Usuario usuario = findById(id);
-//       UsuarioRepository.delete(usuario);
-//    }
+    public void delete(UUID id) {
+        usuarioRepository.deleteById(id);
+    }
 
 }

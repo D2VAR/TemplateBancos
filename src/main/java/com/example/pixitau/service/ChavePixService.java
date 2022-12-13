@@ -5,8 +5,6 @@ import com.example.pixitau.dto.ChavePixResponse;
 import com.example.pixitau.model.ChavePix;
 import com.example.pixitau.repository.ChavePixRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

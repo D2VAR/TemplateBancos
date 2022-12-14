@@ -1,0 +1,8 @@
+com\bancoItau\bancoItau\domain\model\Conta$ContaBuilder.class
+com\bancoItau\bancoItau\domain\model\Conta.class
+com\bancoItau\bancoItau\domain\model\Usuario.class
+com\bancoItau\bancoItau\domain\dto\ContaResponseDTO.class
+com\bancoItau\bancoItau\BancoItauApplication.class
+com\bancoItau\bancoItau\domain\service\ContaService.class
+com\bancoItau\bancoItau\adapter\in\controller\ContaController.class
+com\bancoItau\bancoItau\adapter\out\db\repository\ContaRepository.class

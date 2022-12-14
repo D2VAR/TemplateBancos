@@ -4,7 +4,7 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    image: BancoItau/api
+    image: itau/api
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -15,7 +15,7 @@ services:
       - db
   db:
     image: mysql
-    container_name: itau
+    container_name: BancoItau
     ports:
       - "3306:3306"
     networks:

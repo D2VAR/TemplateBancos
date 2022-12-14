@@ -26,6 +26,6 @@ public class Conta {
     private BigDecimal saldo;
 
 
-//    @OneToOne
-//    private Usuario usuario;
+    @OneToOne
+    private Usuario usuario;
 }

@@ -1,6 +1,7 @@
 package com.bancoItau.bancoItau.domain.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "usuario")
 public class Usuario {
     @Id
@@ -27,7 +29,7 @@ public class Usuario {
     private String email;
 
 
-    //@OneToOne(mappedBy = "usuario")
-    //private Conta conta;
+    @OneToOne(mappedBy = "usuario")
+    private Conta conta;
 
 }

@@ -1,9 +1,12 @@
 package com.bancoItau.bancoItau.domain.service;
 
 import com.bancoItau.bancoItau.adapter.out.db.repository.ChavePixRepository;
+import com.bancoItau.bancoItau.domain.dto.ChavePixMensagem;
 import com.bancoItau.bancoItau.domain.dto.ChavePixRequestDTO;
 import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
+import com.bancoItau.bancoItau.domain.mapper.ChavePixMapper;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
+import com.bancoItau.bancoItau.port.in.CadastroChavePixInputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +15,11 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ChavePixService {
+public class ChavePixService implements CadastroChavePixInputPort {
 
 
     private  final  ChavePixRepository chavePixRepository;
-
-
+    ChavePixMapper mapper;
 
     public ChavePixResponseDTO save(ChavePixRequestDTO chavePixRequestDTO) {
         ChavePix chavePix = new ChavePix(chavePixRequestDTO);
@@ -40,5 +42,9 @@ public class ChavePixService {
     }
 
 
-
+    @Override
+    public void cadastrarChave(ChavePixMensagem chavePixMensagem) {
+        ChavePix chavePix = mapper.toModel(chavePixMensagem);
+        chavePixRepository.save(chavePix);
+    }
 }

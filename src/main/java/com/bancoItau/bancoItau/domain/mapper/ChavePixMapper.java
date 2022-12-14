@@ -1,6 +1,7 @@
 package com.bancoItau.bancoItau.domain.mapper;
 
 
+import com.bancoItau.bancoItau.domain.dto.ChavePixMensagem;
 import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
 import org.mapstruct.Mapper;
@@ -15,5 +16,7 @@ public interface ChavePixMapper {
 
     ChavePixResponseDTO toResponse(ChavePix chavePix);
     List<ChavePixResponseDTO> toResponseList(List<ChavePix> chavePixList);
+
+    ChavePix toModel(ChavePixMensagem chavePixMensagem);
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -21,21 +22,22 @@ public class ContaService  {
 
 
     public List<Conta> listAllContas() {
-        return contaRepository.findAll();
+        return (List<Conta>) contaRepository.findAll();
     }
 
 
-    public Conta getContabyId(UUID id) {
-        return contaRepository.findById(id).get();
+    public Optional<Conta> getContabyId(UUID id) {
+        return contaRepository.findById(id);
     }
 
 
     public Conta saveConta(ContaResponseDTO contaResponseDTO) {
         return contaRepository.save(Conta.builder()
                 .agencia(contaResponseDTO.getAgencia())
-                .nConta(contaResponseDTO.getConta())
+                .nConta(contaResponseDTO.getNconta())
                 .saldo(contaResponseDTO.getSaldo())
                 .build());
+
     }
 
     public String deleteConta(UUID id) {

@@ -1,18 +1,18 @@
 version: "3"
 services:
-  itau:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    image: itau/api
-    ports:
-      - "8080:8080"
-      - "8081:8081"
-    environment:
-      - OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8081 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
-      - PROFILE=dev
-    links:
-      - db
+#  itau:
+#    build:
+#      context: ./
+#      dockerfile: ./Dockerfile
+#    image: itau/api
+#    ports:
+#      - "8080:8080"
+#      - "8081:8081"
+#    environment:
+#      - OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8081 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+#      - PROFILE=dev
+#    links:
+#      - db
   db:
     image: mysql
     container_name: BancoItau

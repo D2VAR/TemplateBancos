@@ -17,7 +17,8 @@ import java.util.UUID;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, unique = true, nullable = false)
+    @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
+    @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "varChar(100)")
     private UUID id;
     @Column(name = "nome", nullable = false, length = 200, unique = false)
     private String nome;

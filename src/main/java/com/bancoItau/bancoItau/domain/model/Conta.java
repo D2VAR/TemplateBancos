@@ -1,9 +1,6 @@
 package com.bancoItau.bancoItau.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,12 +11,14 @@ import java.util.UUID;
 @Data
 @Entity
 @Builder
-@Table(name = "conta")
+@ToString
+@Table(name = "contas")
 public class Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", updatable = false, unique = true, nullable = false)
+    @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
+    @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "varChar(100)")
     private UUID id;
     private String agencia;
     private Integer nConta;
@@ -28,4 +27,5 @@ public class Conta {
 
     @OneToOne
     private Usuario usuario;
+
 }

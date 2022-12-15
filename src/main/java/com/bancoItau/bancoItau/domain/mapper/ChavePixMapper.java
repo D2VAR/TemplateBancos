@@ -19,4 +19,5 @@ public interface ChavePixMapper {
 
     ChavePix toModel(ChavePixMensagem chavePixMensagem);
 
+    ChavePixMensagem toMensagem(ChavePix novaChavePix);
 }

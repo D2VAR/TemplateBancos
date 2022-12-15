@@ -9,13 +9,11 @@ import lombok.*;
 @ToString
 public class ChavePixMensagem {
 
-    private String id;
-    private String status;
     private String codBanco;
     private String numeroConta;
     private String agenciaConta;
     private String cpfCnpj;
     private String nome;
-//    private String tipoChave;
+    private String tipoChave;
     private String valorChave;
 }

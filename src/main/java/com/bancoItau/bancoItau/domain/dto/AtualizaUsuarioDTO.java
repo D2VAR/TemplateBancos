@@ -10,7 +10,7 @@ import java.util.UUID;
 public class AtualizaUsuarioDTO {
 
     private String nome;
-    private int telefone;
+    private Integer telefone;
     private String email;
 
 }

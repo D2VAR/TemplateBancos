@@ -24,7 +24,7 @@ public class Usuario {
     @Column(name = "cpf", nullable = false, unique = true)
     private String cpf;
     @Column(name = "telefone", nullable = false, unique = false)
-    private int telefone;
+    private Integer telefone;
     @Column(name = "email", nullable = false, unique = false)
     private String email;
 

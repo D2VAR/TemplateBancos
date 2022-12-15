@@ -55,7 +55,7 @@ public class UsuarioService  {
             if(atualizaUsuarioDTO.getNome() != null) {
                 usuario.setNome(atualizaUsuarioDTO.getNome());
             }
-            if(atualizaUsuarioDTO.getTelefone() == 0) {
+            if(atualizaUsuarioDTO.getTelefone() != null) {
                 usuario.setTelefone(atualizaUsuarioDTO.getTelefone());
             }
             if(atualizaUsuarioDTO.getEmail() != null) {

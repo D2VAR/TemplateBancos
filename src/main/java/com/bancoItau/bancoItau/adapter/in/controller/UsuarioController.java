@@ -29,13 +29,13 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @GetMapping("/busca-usuario")
+    @GetMapping
     public ResponseEntity<List<Usuario>> listAllUsuarios() {
 
         return ResponseEntity.ok(usuarioService.listAllUsuarios());
     }
 
-    @GetMapping("/busca-usuario/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUsuariobyId(@PathVariable UUID id) {
         return ResponseEntity.ok(usuarioService.getUsuariobyId(id));
     }

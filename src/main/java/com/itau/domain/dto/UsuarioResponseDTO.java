@@ -1,6 +1,5 @@
 package com.itau.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.itau.domain.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

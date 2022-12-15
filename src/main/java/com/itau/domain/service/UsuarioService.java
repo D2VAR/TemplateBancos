@@ -32,12 +32,12 @@ public class UsuarioService  {
     }
 
 
-    public Usuario saveUsuario(UsuarioResponseDTO UsuarioResponseDTO) {
+    public Usuario saveUsuario(UsuarioResponseDTO usuarioResponseDTO) {
         return usuarioRepository.save(Usuario.builder()
-                .nome(UsuarioResponseDTO.getNome())
-                .cpf(UsuarioResponseDTO.getCpf())
-                .telefone(UsuarioResponseDTO.getTelefone())
-                .email(UsuarioResponseDTO.getEmail())
+                .nome(usuarioResponseDTO.getNome())
+                .cpf(usuarioResponseDTO.getCpf())
+                .telefone(usuarioResponseDTO.getTelefone())
+                .email(usuarioResponseDTO.getEmail())
                 .build());
 
 

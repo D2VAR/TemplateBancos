@@ -1,7 +1,6 @@
 package com.itau.domain.service;
 
 import com.itau.adapter.out.db.repository.ChavePixRepository;
-import com.itau.adapter.out.db.repository.ContaRepository;
 import com.itau.domain.dto.ChavePixRequest;
 import com.itau.domain.dto.ChavePixResponse;
 import com.itau.domain.model.ChavePix;

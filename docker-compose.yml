@@ -1,18 +1,36 @@
-version: '2.1'
+version: "3"
 services:
-
-  database:
-    image: mysql:5.7
-    container_name: mysql
-    #restart: always
-    environment:
-      MYSQL_DATABASE: 'banco'
-      #MYSQL_USER: 'root'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+#  itau:
+#    build:
+#      context: ./
+#      dockerfile: ./Dockerfile
+#    image: itau/api
+#    ports:
+#      - "8080:8080"
+#      - "8081:8081"
+#    environment:
+#      - OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8081 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+#      - PROFILE=dev
+#    links:
+#      - db
+  db:
+    image: mysql
+    container_name: BancoItau
     ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+      - "3306:3306"
+    networks:
+      - my-network
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=itau
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - './.mysql-data/db:/var/lib/mysql'
+      - ./mysql-data:/var/lib/mysql
+      - ./dump:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql-data:
+
+networks:
+  my-network:
+    driver: bridge

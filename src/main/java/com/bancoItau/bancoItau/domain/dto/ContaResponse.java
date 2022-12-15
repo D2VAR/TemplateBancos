@@ -1,11 +1,9 @@
 package com.bancoItau.bancoItau.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,6 +12,6 @@ import java.math.BigDecimal;
 public class ContaResponse{
 
     private String agencia;
-    private Integer conta;
+    private Integer numeroConta;
     private BigDecimal saldo;
 }

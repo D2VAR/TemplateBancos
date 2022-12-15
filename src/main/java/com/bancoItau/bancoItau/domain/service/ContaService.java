@@ -21,12 +21,12 @@ public class ContaService  {
 
 
     public List<Conta> listAllContas() {
-        return contaRepository.findAll();
+        return (List<Conta>) contaRepository.findAll();
     }
 
 
-    public Conta getContabyId(UUID id) {
-        return contaRepository.findById(id).get();
+    public Optional<Conta> getContabyId(UUID id) {
+        return contaRepository.findById(id);
     }
 
 

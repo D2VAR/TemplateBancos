@@ -1,7 +1,7 @@
 package com.bancoItau.bancoItau.domain.service;
 
 import com.bancoItau.bancoItau.adapter.out.db.repository.ContaRepository;
-import com.bancoItau.bancoItau.domain.dto.ContaResponseDTO;
+import com.bancoItau.bancoItau.domain.dto.ContaResponse;
 import com.bancoItau.bancoItau.domain.model.Conta;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +30,11 @@ public class ContaService  {
     }
 
 
-    public Conta saveConta(ContaResponseDTO contaResponseDTO) {
+    public Conta saveConta(ContaResponse contaResponse) {
         return contaRepository.save(Conta.builder()
-                .agencia(contaResponseDTO.getAgencia())
-                .nConta(contaResponseDTO.getConta())
-                .saldo(contaResponseDTO.getSaldo())
+                .agencia(contaResponse.getAgencia())
+                .nConta(contaResponse.getConta())
+                .saldo(contaResponse.getSaldo())
                 .build());
     }
 

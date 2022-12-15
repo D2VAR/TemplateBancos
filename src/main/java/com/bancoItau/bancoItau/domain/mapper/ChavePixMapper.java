@@ -1,8 +1,7 @@
 package com.bancoItau.bancoItau.domain.mapper;
 
 
-import com.bancoItau.bancoItau.domain.dto.ChavePixRequestDTO;
-import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
+import com.bancoItau.bancoItau.domain.dto.ChavePixResponse;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
@@ -14,9 +13,9 @@ import java.util.List;
 
 public interface ChavePixMapper {
 
-    ChavePixResponseDTO chavePixToChavePixResponseDTO(ChavePix chavePix);
+    ChavePixResponse chavePixToChavePixResponseDTO(ChavePix chavePix);
 
-    List<ChavePixResponseDTO> chavePixListToChavePixResponseDTOList(List<ChavePix> chavePixList);
+    List<ChavePixResponse> chavePixListToChavePixResponseDTOList(List<ChavePix> chavePixList);
 
 
 

@@ -1,8 +1,8 @@
 package com.bancoItau.bancoItau.adapter.in.controller;
 
 
-import com.bancoItau.bancoItau.domain.dto.ChavePixRequestDTO;
-import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
+import com.bancoItau.bancoItau.domain.dto.ChavePixRequest;
+import com.bancoItau.bancoItau.domain.dto.ChavePixResponse;
 import com.bancoItau.bancoItau.domain.mapper.ChavePixMapper;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
 import com.bancoItau.bancoItau.domain.service.ChavePixService;
@@ -25,22 +25,22 @@ public class ChavePixController {
 
 
     @PostMapping()
-    public ResponseEntity save(@RequestBody ChavePixRequestDTO chavePixRequestDTO) {
-        ChavePixResponseDTO chavePixResponseDTO = chavePixService.save(chavePixRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(chavePixResponseDTO);
+    public ResponseEntity save(@RequestBody ChavePixRequest chavePixRequest) {
+        ChavePixResponse chavePixResponse = chavePixService.save(chavePixRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(chavePixResponse);
     }
 
     @GetMapping("{chavePixId}")
-    public ResponseEntity<ChavePixResponseDTO> findById(@PathVariable UUID chavePixId) {
+    public ResponseEntity<ChavePixResponse> findById(@PathVariable UUID chavePixId) {
         ChavePix chavePix = chavePixService.findById(chavePixId);
-        ChavePixResponseDTO chavePixResponseDTO = chavePixMapper.chavePixToChavePixResponseDTO(chavePix);
-        return ResponseEntity.status(HttpStatus.OK).body(chavePixResponseDTO);
+        ChavePixResponse chavePixResponse = chavePixMapper.chavePixToChavePixResponseDTO(chavePix);
+        return ResponseEntity.status(HttpStatus.OK).body(chavePixResponse);
     }
 
     @GetMapping()
-    public ResponseEntity<List<ChavePixResponseDTO>> findAll() {
+    public ResponseEntity<List<ChavePixResponse>> findAll() {
         List<ChavePix> chavePixList = chavePixService.findAll();
-        List<ChavePixResponseDTO> chavePixResponseList = chavePixMapper.chavePixListToChavePixResponseDTOList(chavePixList);
+        List<ChavePixResponse> chavePixResponseList = chavePixMapper.chavePixListToChavePixResponseDTOList(chavePixList);
         return ResponseEntity.status(HttpStatus.OK).body(chavePixResponseList);
     }
 

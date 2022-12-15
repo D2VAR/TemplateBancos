@@ -4,8 +4,7 @@ public enum TipoChave {
 
     EMAIL,
     TELEFONE,
-    CPF,
-    CNPJ,
+    CPF_CNPJ,
     ALEATORIA;
 
 }

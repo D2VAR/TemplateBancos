@@ -1,7 +1,6 @@
 package com.bancoItau.bancoItau.domain.mapper;
 
-import com.bancoItau.bancoItau.domain.dto.ChavePixRequestDTO;
-import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
+import com.bancoItau.bancoItau.domain.dto.ChavePixResponse;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +10,13 @@ import java.util.List;
 public class ChavePixMapperImpl implements ChavePixMapper{
 
     @Override
-    public ChavePixResponseDTO chavePixToChavePixResponseDTO(ChavePix chavePix) {
-         return new ChavePixResponseDTO(chavePix.getId(), chavePix.getValor(), chavePix.getConta());
+    public ChavePixResponse chavePixToChavePixResponseDTO(ChavePix chavePix) {
+         return new ChavePixResponse(chavePix.getId(), chavePix.getValor(), chavePix.getConta());
     }
 
 
     @Override
-    public List<ChavePixResponseDTO> chavePixListToChavePixResponseDTOList(List<ChavePix> chavePixList) {
+    public List<ChavePixResponse> chavePixListToChavePixResponseDTOList(List<ChavePix> chavePixList) {
         return null;
     }
 

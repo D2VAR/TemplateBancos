@@ -1,8 +1,8 @@
 package com.bancoItau.bancoItau.domain.service;
 
 import com.bancoItau.bancoItau.adapter.out.db.repository.ChavePixRepository;
-import com.bancoItau.bancoItau.domain.dto.ChavePixRequestDTO;
-import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
+import com.bancoItau.bancoItau.domain.dto.ChavePixRequest;
+import com.bancoItau.bancoItau.domain.dto.ChavePixResponse;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,13 @@ public class ChavePixService {
 
 
 
-    public ChavePixResponseDTO save(ChavePixRequestDTO chavePixRequestDTO) {
+    public ChavePixResponse save(ChavePixRequest chavePixRequest) {
         ChavePix chavePix = ChavePix.builder()
                 .id(UUID.randomUUID())
-                .valor(chavePixRequestDTO.getValor())
+                .valor(chavePixRequest.getValorChave())
                 .build();
         chavePixRepository.save(chavePix);
-        return new ChavePixResponseDTO(chavePix.getId(), chavePix.getValor(), chavePix.getConta());
+        return new ChavePixResponse(chavePix.getId(), chavePix.getValor(), chavePix.getConta());
     }
 
 

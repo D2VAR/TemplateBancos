@@ -1,7 +1,7 @@
 package com.bancoItau.bancoItau.adapter.in.controller;
 
 
-import com.bancoItau.bancoItau.domain.dto.ContaResponseDTO;
+import com.bancoItau.bancoItau.domain.dto.ContaResponse;
 import com.bancoItau.bancoItau.domain.model.Conta;
 import com.bancoItau.bancoItau.domain.service.ContaService;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +32,8 @@ public class ContaController {
     }
 
     @PostMapping
-    public ResponseEntity<Conta> saveConta(@RequestBody ContaResponseDTO contaResponseDTO) {
-        return ResponseEntity.ok(contaService.saveConta(contaResponseDTO));
+    public ResponseEntity<Conta> saveConta(@RequestBody ContaResponse contaResponse) {
+        return ResponseEntity.ok(contaService.saveConta(contaResponse));
     }
 
     @DeleteMapping("/{id}")

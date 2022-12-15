@@ -2,6 +2,7 @@ package com.bancoItau.bancoItau.adapter.in.controller;
 
 
 import com.bancoItau.bancoItau.adapter.out.db.repository.UsuarioRepository;
+import com.bancoItau.bancoItau.domain.dto.AtualizaUsuarioDTO;
 import com.bancoItau.bancoItau.domain.dto.UsuarioResponseDTO;
 import com.bancoItau.bancoItau.domain.model.Usuario;
 import com.bancoItau.bancoItau.domain.service.UsuarioService;
@@ -22,6 +23,7 @@ public class UsuarioController {
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
+
     private UsuarioService usuarioService;
 
     @Autowired
@@ -34,7 +36,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/busca-usuario/{id}")
-    public ResponseEntity<Usuario> getUsuariobyId(@PathVariable UUID id) {
+    public ResponseEntity<?> getUsuariobyId(@PathVariable UUID id) {
         return ResponseEntity.ok(usuarioService.getUsuariobyId(id));
     }
 
@@ -43,27 +45,20 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.saveUsuario(usuarioResponseDTO));
     }
 
-   /* @PutMapping("atualizar/{id}")
-    @Transactional
-    @CacheEvict(value = "buscar-dados", allEntries = true)
-    public ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable UUID id, @RequestBody AtualizaUsuario atualizaUsuario){
-        Optional<Usuario> optional = usuarioRepository.findById(id);
-        if(optional.isPresent()){
-            Usuario usuario = AtualizaUsuario.atualizar(id, usuarioRepository);
-            return ResponseEntity.ok(new UsuarioResponseDTO(usuario));
-        }
-        return ResponseEntity.notFound().build();
-    }*/
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> updateById(@PathVariable UUID id, @RequestBody AtualizaUsuarioDTO atualizaUsuarioDTO){
+        return usuarioService.updateById(id, atualizaUsuarioDTO);
+
+    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(UUID id){
+    public ResponseEntity deletePorId(@PathVariable UUID id) {
         Optional<Usuario> optional = usuarioRepository.findById(id);
-        if(optional.isPresent()){
-            usuarioRepository.deleteById(id);
-        }
-        else{
+        if (optional.isPresent()) {
+            usuarioService.deletePorId(id);
+        } else {
             ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

@@ -28,7 +28,7 @@ public class UsuarioService  {
 
 
     public Usuario getUsuariobyId(UUID id) {
-        return usuarioRepository.findById(id).get();
+        return usuarioRepository.findById(id).orElseThrow(()->new RuntimeException("Usuario nao encontrado!"));
     }
 
 
@@ -43,6 +43,7 @@ public class UsuarioService  {
 
     }
     public void deletePorId(UUID id) {
+        getUsuariobyId(id);
         usuarioRepository.deleteById(id);
     }
 

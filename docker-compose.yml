@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
 #  itau:
 #    build:
@@ -15,7 +15,7 @@ services:
 #      - db
   db:
     image: mysql
-    container_name: BancoItau
+    container_name: mysql_itau
     ports:
       - "3306:3306"
     networks:
@@ -24,13 +24,9 @@ services:
       - MYSQL_ROOT_HOST=%
       - MYSQL_DATABASE=itau
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - ./mysql-data:/var/lib/mysql
-      - ./dump:/docker-entrypoint-initdb.d
-
-volumes:
-  mysql-data:
-
+#    volumes:
+#      - ./mysql-data:/var/lib/mysql
+#      - ./dump:/docker-entrypoint-initdb.
 networks:
   my-network:
     driver: bridge

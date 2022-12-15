@@ -1,5 +1,6 @@
 package com.itau.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.itau.domain.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +18,7 @@ public class UsuarioResponseDTO {
     private UUID id;
     private String cpf;
     private String nome;
-
     private String telefone;
-
     private String email;
 
 

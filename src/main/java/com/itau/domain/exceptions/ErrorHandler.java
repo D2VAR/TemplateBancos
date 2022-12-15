@@ -13,8 +13,8 @@ import java.util.List;
 @ControllerAdvice
 @AllArgsConstructor
 
-public class Exception extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({ RuntimeException.class })
+public class ErrorHandler extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
 
         String userMessage = ex.getMessage();
@@ -22,7 +22,7 @@ public class Exception extends ResponseEntityExceptionHandler {
 
         List<Error> errors = List.of(new Error(userMessage, developerMessage));
 
-        return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     private static class Error{

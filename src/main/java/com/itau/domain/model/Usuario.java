@@ -18,9 +18,9 @@ public class Usuario {
     @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "varChar(100)")
     private UUID id;
-    @Column(name = "nome", nullable = false, length = 200, unique = false)
+    @Column(name = "nome", nullable = false, length = 200)
     private String nome;
-    @Column(name = "cpf", nullable = false, unique = true)
+    @Column(name = "cpf", nullable = false, unique = true, length = 20)
     private String cpf;
     @Column(name = "telefone", nullable = false, unique = false)
     private String telefone;

@@ -1,10 +1,11 @@
 package com.itau.domain.model;
 
-import com.itau.domain.dto.ChavePixRequest;
+import com.itau.domain.enums.TipoChave;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -18,12 +19,20 @@ import java.util.UUID;
 public class ChavePix {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
+    @Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "VarChar(100)")
     private UUID id;
+    @Column(name = "valor", updatable = false, unique = true, nullable = false, length = 100)
     private String valor;
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", updatable = false, nullable = false)
+    private TipoChave tipo;
     @ManyToOne
-    private Conta idConta;
+    private Conta conta;
 
+    public ChavePix(String valor, TipoChave tipo, Conta conta){
+        this.valor = valor;
+        this.tipo = tipo;
+        this.conta = conta;
+    }
 }

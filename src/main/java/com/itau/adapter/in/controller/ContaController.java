@@ -3,6 +3,7 @@ package com.itau.adapter.in.controller;
 import com.itau.domain.dto.ContaResponse;
 import com.itau.domain.model.Conta;
 import com.itau.domain.service.ContaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +12,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/conta")
+@RequiredArgsConstructor
 public class ContaController {
-
-
-    private ContaService contaService;
-
-    public ContaController(ContaService contaService) {
-        this.contaService = contaService;
-    }
+    private final ContaService contaService;
 
     @GetMapping
     public ResponseEntity<List<Conta>> listAllContas() {
@@ -26,8 +22,8 @@ public class ContaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Conta> getContabyId(@PathVariable UUID id) {
-        return ResponseEntity.ok(contaService.getContabyId(id).get());
+    public ResponseEntity<Conta> getContaById(@PathVariable UUID id) {
+        return ResponseEntity.ok(contaService.getContabyId(id));
     }
 
     @PostMapping
@@ -36,7 +32,8 @@ public class ContaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteConta(@PathVariable UUID id) {
-        return ResponseEntity.ok(contaService.deleteConta(id));
+    public ResponseEntity<Void> deleteConta(@PathVariable UUID id) {
+        contaService.deleteConta(id);
+        return ResponseEntity.noContent().build();
     }
 }

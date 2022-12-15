@@ -1,32 +1,20 @@
 package com.itau.adapter.in.controller;
 
-
-
-import com.itau.adapter.out.db.repository.UsuarioRepository;
 import com.itau.domain.dto.AtualizaUsuarioDTO;
 import com.itau.domain.dto.UsuarioResponseDTO;
 import com.itau.domain.model.Usuario;
 import com.itau.domain.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuario")
+@RequiredArgsConstructor
 public class UsuarioController {
-
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
-
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> listAllUsuarios() {
@@ -35,7 +23,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUsuariobyId(@PathVariable UUID id) {
+    public ResponseEntity<Usuario> getUsuariobyId(@PathVariable UUID id) {
         return ResponseEntity.ok(usuarioService.getUsuariobyId(id));
     }
 
@@ -51,13 +39,8 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletePorId(@PathVariable UUID id) {
-        Optional<Usuario> optional = usuarioRepository.findById(id);
-        if (optional.isPresent()) {
-            usuarioService.deletePorId(id);
-        } else {
-            ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> deletePorId(@PathVariable UUID id) {
+        usuarioService.deletePorId(id);
         return ResponseEntity.noContent().build();
     }
 }

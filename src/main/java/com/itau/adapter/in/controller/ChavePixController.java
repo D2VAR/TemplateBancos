@@ -20,7 +20,7 @@ public class ChavePixController {
     private final ChavePixMapper chavePixMapper;
 
     @PostMapping
-    public ResponseEntity<ChavePixResponse> save(@RequestBody ChavePixRequest chavePixRequest) {
+    public ResponseEntity<ChavePixResponse> saveChavePix(@RequestBody ChavePixRequest chavePixRequest) {
         ChavePixResponse chavePixResponse = chavePixService.save(chavePixRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(chavePixResponse);
     }
@@ -40,9 +40,8 @@ public class ChavePixController {
     }
 
     @DeleteMapping("{chavePixId}")
-    public void delete(@PathVariable UUID chavePixId) {
+    public ResponseEntity<Void> delete(@PathVariable UUID chavePixId) {
         chavePixService.delete(chavePixId);
+        return ResponseEntity.noContent().build();
     }
-
-
 }

@@ -3,8 +3,6 @@ package com.itau.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.itau.domain.enums.TipoChave;
-import com.itau.domain.model.Conta;
-import com.itau.domain.model.Usuario;
 import lombok.*;
 
 import java.util.UUID;

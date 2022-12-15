@@ -1,6 +1,7 @@
 package com.itau.domain.model;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -17,7 +18,7 @@ public class Conta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
+    @Type(type="org.hibernate.type.UUIDCharType")
     @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "varChar(100)")
     private UUID id;
     private String agencia;

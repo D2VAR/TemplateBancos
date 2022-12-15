@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping ("/api/chavepix")
 @RequiredArgsConstructor
-public abstract class ChavePixController {
+public class ChavePixController {
 
     private final ChavePixService chavePixService;
     private final ChavePixMapper chavePixMapper;
@@ -25,23 +25,22 @@ public abstract class ChavePixController {
 
 
     @PostMapping()
-    public ResponseEntity<ChavePixResponseDTO> create(@RequestBody ChavePixRequestDTO chavePixRequestDTO) {
-        ChavePixResponseDTO chavePix = chavePixService.save(chavePixRequestDTO);
-        ChavePixResponseDTO chavePixResponseDTO = chavePixMapper.toResponse(chavePix.get());
+    public ResponseEntity save(@RequestBody ChavePixRequestDTO chavePixRequestDTO) {
+        ChavePixResponseDTO chavePixResponseDTO = chavePixService.save(chavePixRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(chavePixResponseDTO);
     }
 
     @GetMapping("{chavePixId}")
     public ResponseEntity<ChavePixResponseDTO> findById(@PathVariable UUID chavePixId) {
         ChavePix chavePix = chavePixService.findById(chavePixId);
-        ChavePixResponseDTO chavePixResponseDTO = chavePixMapper.toResponse(chavePix);
+        ChavePixResponseDTO chavePixResponseDTO = chavePixMapper.chavePixToChavePixResponseDTO(chavePix);
         return ResponseEntity.status(HttpStatus.OK).body(chavePixResponseDTO);
     }
 
     @GetMapping()
     public ResponseEntity<List<ChavePixResponseDTO>> findAll() {
         List<ChavePix> chavePixList = chavePixService.findAll();
-        List<ChavePixResponseDTO> chavePixResponseList = chavePixMapper.toResponseList(chavePixList);
+        List<ChavePixResponseDTO> chavePixResponseList = chavePixMapper.chavePixListToChavePixResponseDTOList(chavePixList);
         return ResponseEntity.status(HttpStatus.OK).body(chavePixResponseList);
     }
 

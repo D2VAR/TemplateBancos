@@ -20,8 +20,12 @@ public class ChavePixService {
 
 
     public ChavePixResponseDTO save(ChavePixRequestDTO chavePixRequestDTO) {
-        ChavePix chavePix = new ChavePix(chavePixRequestDTO);
-        return new ChavePixResponseDTO(chavePixRepository.save(chavePix));
+        ChavePix chavePix = ChavePix.builder()
+                .id(UUID.randomUUID())
+                .valor(chavePixRequestDTO.getValor())
+                .build();
+        chavePixRepository.save(chavePix);
+        return new ChavePixResponseDTO(chavePix.getId(), chavePix.getValor(), chavePix.getConta());
     }
 
 

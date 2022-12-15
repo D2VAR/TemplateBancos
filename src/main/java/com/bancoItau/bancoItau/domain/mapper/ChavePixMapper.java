@@ -1,6 +1,7 @@
 package com.bancoItau.bancoItau.domain.mapper;
 
 
+import com.bancoItau.bancoItau.domain.dto.ChavePixRequestDTO;
 import com.bancoItau.bancoItau.domain.dto.ChavePixResponseDTO;
 import com.bancoItau.bancoItau.domain.model.ChavePix;
 import org.mapstruct.Mapper;
@@ -13,7 +14,10 @@ import java.util.List;
 
 public interface ChavePixMapper {
 
-    ChavePixResponseDTO toResponse(ChavePix chavePix);
-    List<ChavePixResponseDTO> toResponseList(List<ChavePix> chavePixList);
+    ChavePixResponseDTO chavePixToChavePixResponseDTO(ChavePix chavePix);
+
+    List<ChavePixResponseDTO> chavePixListToChavePixResponseDTOList(List<ChavePix> chavePixList);
+
+
 
 }

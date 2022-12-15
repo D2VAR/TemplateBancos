@@ -20,8 +20,9 @@ import java.util.UUID;
 public class ChavePix {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
+    @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "VarChar(100)")
     private UUID id;
-
     private String valor;
 
 
@@ -49,5 +50,10 @@ public class ChavePix {
                 "id=" + id +
                 ", valor='" + valor + '\'' +
                 '}';
+    }
+
+    public Conta getConta() {
+        Conta conta = new Conta();
+        return conta;
     }
 }

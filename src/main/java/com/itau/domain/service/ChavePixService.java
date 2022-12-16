@@ -5,6 +5,8 @@ import com.itau.adapter.out.db.repository.ChavePixRepository;
 import com.itau.domain.dto.ChavePixMensagem;
 import com.itau.domain.dto.ChavePixRequest;
 import com.itau.domain.dto.ChavePixResponse;
+import com.itau.domain.exceptions.ChavePixAlreadyExistException;
+import com.itau.domain.exceptions.ChavePixNotFoundException;
 import com.itau.domain.model.ChavePix;
 import com.itau.port.in.CadastroChavePixInputPort;
 import com.itau.port.out.BacenProducerOutputPort;
@@ -60,8 +62,8 @@ public class ChavePixService implements CadastroChavePixInputPort{
     private void validarExistenciaChavePixInterna(String valor){
         try{
             findByValor(valor);
-            throw new RuntimeException("Chave ja existente!");
-        } catch (RuntimeException e){
+            throw new ChavePixAlreadyExistException("Chave ja existente!");
+        } catch (ChavePixNotFoundException e){
             return;
         }
     }
@@ -83,7 +85,7 @@ public class ChavePixService implements CadastroChavePixInputPort{
 
     public ChavePix findByValor(String valor){
         return chavePixRepository.findByValor(valor)
-                .orElseThrow(() -> new RuntimeException("Chave Pix não encontrada!"));
+                .orElseThrow(() -> new ChavePixNotFoundException("Chave Pix não encontrada!"));
     }
 
     public List<ChavePix> findAll(){

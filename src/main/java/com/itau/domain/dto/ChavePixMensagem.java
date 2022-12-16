@@ -2,6 +2,7 @@ package com.itau.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.itau.domain.enums.TipoChave;
+import com.itau.domain.model.Conta;
 import lombok.*;
 
 @Getter
@@ -26,4 +27,15 @@ public class ChavePixMensagem {
     private TipoChave tipoChave;
     @JsonProperty("valor_chave")
     private String valorChave;
+
+    public ChavePixMensagem(String valor, TipoChave tipo, Conta conta) {
+        this.valorChave = valor;
+        this.tipoChave = tipo;
+        this.numeroConta = conta.getNumeroConta();
+        this.agenciaConta = conta.getAgencia();
+        this.cpfCnpj = conta.getUsuario().getCpf();
+        this.nome = conta.getUsuario().getNome();
+        this.codBanco = conta.getUsuario().getBanco().toString();
+
+    }
 }

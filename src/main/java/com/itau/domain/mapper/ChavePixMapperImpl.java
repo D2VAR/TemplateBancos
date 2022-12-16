@@ -28,6 +28,6 @@ public class ChavePixMapperImpl implements ChavePixMapper{
 
     @Override
     public ChavePixMensagem toMensagem(ChavePix novaChavePix){
-        return null;
+               return new ChavePixMensagem(novaChavePix.getValor(), novaChavePix.getTipo(), novaChavePix.getConta());
     }
 }

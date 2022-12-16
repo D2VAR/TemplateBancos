@@ -1,0 +1,109 @@
+version: "3.8"
+services:
+  mysql_itau:
+    image: mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    networks:
+      - PIX
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=itau
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+#    volumes:
+#      - ./mysql-data:/var/lib/mysql
+#      - ./dump:/docker-entrypoint-initdb.
+
+  dynamodb:
+    networks:
+      - PIX
+    container_name: dynamodb
+    image: localstack/localstack
+    ports:
+      - "8000:4566"
+    expose:
+      - "4566"
+    environment:
+      - EDGE_PORT=4566
+      - SERVICES=dynamodb
+    volumes:
+      - ./src/main/resources/docker-scripts:/docker-entrypoint-initaws.d
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  zookeeper:
+    container_name: zookeeper
+    networks:
+      - PIX
+    image: confluentinc/cp-zookeeper:7.3.0
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  #   reachable on 9092 from the host and on 29092 from inside docker compose
+  kafka:
+    container_name: kafka
+    networks:
+      - PIX
+    image: confluentinc/cp-kafka:7.3.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    expose:
+      - "29092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
+      KAFKA_MIN_INSYNC_REPLICAS: '1'
+
+  init-kafka:
+    networks:
+      - PIX
+    image: confluentinc/cp-kafka:7.3.0
+    depends_on:
+      - kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:29092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic topico-envio-cadastro-chave-pix --replication-factor 1 --partitions 3
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic topico-retorno-cadastro-chave-pix-falha --replication-factor 1 --partitions 3
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic topico-retorno-cadastro-chave-pix-ok --replication-factor 1 --partitions 3
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+  bacen:
+    depends_on:
+      - kafka
+      - dynamodb
+    image: romosken/bacen_pix
+    networks:
+      - PIX
+    container_name: bacen
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+  itau:
+    depends_on:
+      - mysql_itau
+      - kafka
+    image: romosken/itau_pix
+    networks:
+      - PIX
+    container_name: itau
+    ports:
+      - "8081:8081"
+networks:
+  PIX:

@@ -1,6 +1,7 @@
 package com.itau.domain.mapper;
 
 
+import com.itau.domain.dto.ChavePixMensagem;
 import com.itau.domain.dto.ChavePixResponse;
 import com.itau.domain.model.ChavePix;
 import org.mapstruct.Mapper;
@@ -13,10 +14,10 @@ import java.util.List;
 
 public interface ChavePixMapper {
 
-    ChavePixResponse chavePixToChavePixResponseDTO(ChavePix chavePix);
+        ChavePixResponse toResponse(ChavePix chavePix);
+        List<ChavePixResponse> toResponseList(List<ChavePix> chavePixList);
 
-    List<ChavePixResponse> chavePixListToChavePixResponseDTOList(List<ChavePix> chavePixList);
+        ChavePix toModel(ChavePixMensagem chavePixMensagem);
 
-
-
+        ChavePixMensagem toMensagem(ChavePix novaChavePix);
 }

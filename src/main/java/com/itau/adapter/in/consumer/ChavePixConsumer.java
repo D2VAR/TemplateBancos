@@ -1,8 +1,9 @@
-package com.bancoItau.bancoItau.adapter.in.consumer;
+package com.itau.adapter.in.consumer;
 
-import com.bancoItau.bancoItau.domain.dto.ChavePixMensagem;
-import com.bancoItau.bancoItau.port.in.CadastroChavePixInputPort;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itau.domain.dto.ChavePixMensagem;
+import com.itau.domain.dto.ChavePixRequest;
+import com.itau.port.in.CadastroChavePixInputPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -17,13 +18,13 @@ public class ChavePixConsumer {
 
     private final CadastroChavePixInputPort inputPort;
 
-    @KafkaListener(id="${spring.kafka.consumer.group-id}", topics = "${topic.name.retorno.success}")
+    @KafkaListener(id="${spring.kafka.consumer.group-id1}", topics = "${topic.name.retorno.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
         try {
             log.info(String.format("#### Mensagem Consumida -> %s, topic -> %s",
                     mensagemKafka.value(), mensagemKafka.topic()));
             ChavePixMensagem chavePixMensagem = new ObjectMapper().readValue(mensagemKafka.value(), ChavePixMensagem.class);
-            inputPort.cadastrarChave(chavePixMensagem);
+            inputPort.cadastrarChaveInterna(chavePixMensagem);
 
         } catch (Exception ex) {
             log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
@@ -33,7 +34,7 @@ public class ChavePixConsumer {
         }
     }
 
-    @KafkaListener(id="${spring.kafka.consumer.group-id}", topics = "${topic.name.retorno.fail}")
+    @KafkaListener(id="${spring.kafka.consumer.group-id2}", topics = "${topic.name.retorno.fail}")
     public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
         try {
             log.info(String.format("#### Mensagem Consumida -> %s, topic -> %s",

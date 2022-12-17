@@ -35,6 +35,7 @@ public class ChavePixService implements CadastroChavePixInputPort{
         var conta = contaService.getContaById(chavePixRequest.getIdConta());
         return new ChavePix(chavePixRequest.getValorChave(), chavePixRequest.getTipoChave(), conta);
     }
+
     private ChavePix buildChavePixEntity(ChavePixMensagem chavePixMensagem){
         var conta = contaService.getContaByAgenciaAndNumeroConta(chavePixMensagem.getAgenciaConta(), chavePixMensagem.getNumeroConta());
         return new ChavePix(chavePixMensagem.getValorChave(), chavePixMensagem.getTipoChave(), conta);
@@ -47,6 +48,7 @@ public class ChavePixService implements CadastroChavePixInputPort{
             throw new RuntimeException("Chave Pix ja existente!");
 
     }
+
     @Override
     public void cadastrarChaveInterna(ChavePixMensagem chavePix){
         validarExistenciaChavePixInterna(chavePix.getValorChave());
@@ -54,12 +56,10 @@ public class ChavePixService implements CadastroChavePixInputPort{
         save(entity);
         //TODO: enviar notificacao ao cliente
     }
+
     private void validarExistenciaChavePixInterna(String valor){
-        try{
-            findByValor(valor);
-            throw new RuntimeException("Chave ja existente!");
-        } catch (RuntimeException e){
-        }
+        findByValor(valor);
+        throw new RuntimeException("Chave ja existente!");
     }
 
     public ChavePixResponse save(ChavePix chavePix){

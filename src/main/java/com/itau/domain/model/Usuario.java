@@ -1,7 +1,6 @@
 package com.itau.domain.model;
 
 import lombok.*;
-import org.apache.kafka.common.protocol.types.Field;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -23,13 +22,12 @@ public class Usuario {
     private String nome;
     @Column(name = "cpf", nullable = false, unique = true, length = 20)
     private String cpf;
-    @Column(name = "telefone", nullable = false, unique = false)
+    @Column(name = "telefone", nullable = false)
     private String telefone;
-    @Column(name = "email", nullable = false, unique = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     public Object getBanco() {
-        return String.valueOf("341");
-
+        return "341";
     }
 }

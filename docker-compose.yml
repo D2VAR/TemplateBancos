@@ -1,23 +1,12 @@
 version: "3.8"
 services:
-#  itau:
-#    build:
-#      context: ./
-#      dockerfile: ./Dockerfile
-#    image: itau/api
-#    ports:
-#      - "8080:8080"
-#      - "8081:8081"
-#    environment:
-#      - OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8081 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
-#      - PROFILE=dev
-#    links:
-#      - db
-  db:
+  mysql_itau:
     image: mysql
-    container_name: mysql_itau
+    container_name: mysql
     ports:
       - "3306:3306"
+    expose:
+      - "3306"
     networks:
       - PIX
     environment:
@@ -28,14 +17,15 @@ services:
 #      - ./mysql-data:/var/lib/mysql
 #      - ./dump:/docker-entrypoint-initdb.
 
-
-  localstack:
+  dynamodb:
     networks:
       - PIX
-    container_name: localstack
+    container_name: dynamodb
     image: localstack/localstack
     ports:
       - "8000:4566"
+    expose:
+      - "4566"
     environment:
       - EDGE_PORT=4566
       - SERVICES=dynamodb
@@ -44,6 +34,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   zookeeper:
+    container_name: zookeeper
     networks:
       - PIX
     image: confluentinc/cp-zookeeper:7.3.0
@@ -54,6 +45,7 @@ services:
 
   #   reachable on 9092 from the host and on 29092 from inside docker compose
   kafka:
+    container_name: kafka
     networks:
       - PIX
     image: confluentinc/cp-kafka:7.3.0
@@ -94,12 +86,24 @@ services:
   bacen:
     depends_on:
       - kafka
-      - localstack
+      - dynamodb
     image: romosken/bacen_pix
     networks:
       - PIX
     container_name: bacen
     ports:
       - "8080:8080"
+    expose:
+      - "8080"
+  itau:
+    depends_on:
+      - mysql_itau
+      - kafka
+    image: romosken/itau_pix
+    networks:
+      - PIX
+    container_name: itau
+    ports:
+      - "8081:8081"
 networks:
   PIX:

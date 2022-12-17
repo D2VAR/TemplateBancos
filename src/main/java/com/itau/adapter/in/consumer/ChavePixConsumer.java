@@ -2,7 +2,6 @@ package com.itau.adapter.in.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itau.domain.dto.ChavePixMensagem;
-import com.itau.domain.dto.ChavePixRequest;
 import com.itau.port.in.CadastroChavePixInputPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +38,7 @@ public class ChavePixConsumer {
         try {
             log.info(String.format("#### Mensagem Consumida -> %s, topic -> %s",
                     mensagemKafka.value(), mensagemKafka.topic()));
-            ChavePixMensagem chavePixMensagem = new ObjectMapper().readValue(mensagemKafka.value(), ChavePixMensagem.class);
+            new ObjectMapper().readValue(mensagemKafka.value(), ChavePixMensagem.class);
 
         } catch (Exception ex) {
             log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());

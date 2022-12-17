@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name="api-bacen", url="localhost:8080")
+@FeignClient(name="api-bacen", url="${bacen.api.route}")
 public interface ApiBacen{
         @GetMapping("/chave-pix/{valorChave}")
         ApiBacenResponse chavePixExists(@PathVariable String valorChave);

@@ -6,7 +6,6 @@ import com.itau.domain.model.ChavePix;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ChavePixMapperImpl implements ChavePixMapper{
@@ -18,7 +17,7 @@ public class ChavePixMapperImpl implements ChavePixMapper{
 
     @Override
     public List<ChavePixResponse> toResponseList(List<ChavePix> chavePixList){
-        return chavePixList.stream().map(this::toResponse).collect(Collectors.toList());
+        return chavePixList.stream().map(this::toResponse).toList();
     }
 
     @Override

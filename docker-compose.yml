@@ -30,7 +30,7 @@ services:
       - EDGE_PORT=4566
       - SERVICES=dynamodb
     volumes:
-      - ./init-scripts:/docker-entrypoint-initaws.d
+      - ./src/main/resources/docker-scripts:/docker-entrypoint-initaws.d
       - /var/run/docker.sock:/var/run/docker.sock
 
   zookeeper:

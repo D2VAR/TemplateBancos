@@ -25,9 +25,9 @@ public class ChavePixController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{chavePixId}")
-    public ResponseEntity<ChavePixResponse> findById(@PathVariable UUID chavePixId) {
-        ChavePix chavePix = chavePixService.findById(chavePixId);
+    @GetMapping("{valorChavePix}")
+    public ResponseEntity<ChavePixResponse> findChavePixByValor(@PathVariable String valorChavePix) {
+        ChavePix chavePix = chavePixService.findByValor(valorChavePix);
         ChavePixResponse chavePixResponse = chavePixMapper.toResponse(chavePix);
         return ResponseEntity.status(HttpStatus.OK).body(chavePixResponse);
     }

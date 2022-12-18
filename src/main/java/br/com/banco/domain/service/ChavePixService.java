@@ -60,8 +60,8 @@ public class ChavePixService implements CadastroChavePixInputPort{
     private void validarExistenciaChavePixInterna(String valor){
         try{
             findByValor(valor);
-            throw new RuntimeException("Chave ja existente!");
-        } catch (RuntimeException e){
+            throw new ChavePixAlreadyExistException("Chave ja existente!");
+        } catch (ChavePixNotFoundException e){
             return;
         }
     }
@@ -83,7 +83,7 @@ public class ChavePixService implements CadastroChavePixInputPort{
 
     public ChavePix findByValor(String valor){
         return chavePixRepository.findByValor(valor)
-                .orElseThrow(() -> new RuntimeException("Chave Pix não encontrada!"));
+                .orElseThrow(() -> new ChavePixNotFoundException("Chave Pix não encontrada!"));
     }
 
     public List<ChavePix> findAll(){

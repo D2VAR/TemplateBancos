@@ -14,6 +14,27 @@ import java.util.List;
 @AllArgsConstructor
 
 public class ErrorHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(ChavePixAlreadyExistException.class)
+    public ResponseEntity<Object> handleConflitExcepiton(RuntimeException ex, WebRequest request) {
+
+        String userMessage = ex.getMessage();
+        String developerMessage = ex.toString();
+
+        List<Error> errors = List.of(new Error(userMessage, developerMessage));
+
+        return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+    @ExceptionHandler(ChavePixNotFoundException.class)
+    public ResponseEntity<Object> handleNotFoundExcepiton(RuntimeException ex, WebRequest request) {
+
+        String userMessage = ex.getMessage();
+        String developerMessage = ex.toString();
+
+        List<Error> errors = List.of(new Error(userMessage, developerMessage));
+
+        return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
 

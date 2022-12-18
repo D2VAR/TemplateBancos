@@ -1,0 +1,59 @@
+banco:
+  codigo: '341'
+
+server:
+  port: '8080'
+
+bacen:
+  api:
+    route: bacen:8080
+
+spring:
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: http://kafka:29092
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
+    consumer:
+      enable-auto-commit: 'false'
+      auto-offset-reset: earliest
+      bootstrap-servers: http://kafka:29092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id1: group-itau1
+      group-id2: group-itau2
+
+    listener:
+      ack-mode: MANUAL
+
+  jpa:
+    generate-ddl: 'true'
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: 'true'
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ''
+    username: root
+    url: jdbc:mysql://mysql-itau:3306/itau
+
+topic:
+  name:
+    envio: topico-envio-cadastro-chave-pix
+    retorno:
+      fail: topico-retorno-cadastro-chave-pix-falha
+      success: topico-retorno-cadastro-chave-pix-ok
+

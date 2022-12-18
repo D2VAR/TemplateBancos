@@ -8,10 +8,10 @@ import org.springframework.kafka.annotation.EnableKafka;
 @SpringBootApplication
 @EnableKafka
 @EnableFeignClients
-public class BancoItauApplication {
+public class BancoApplication{
 
 	public static void main(String[] args) {
-		SpringApplication.run(BancoItauApplication.class, args);
+		SpringApplication.run(BancoApplication.class, args);
 	}
 
 }

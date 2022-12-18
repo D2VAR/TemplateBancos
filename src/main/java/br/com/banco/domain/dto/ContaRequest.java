@@ -10,13 +10,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ContaResponse{
-    @JsonProperty("id_conta")
-    private UUID id;
+public class ContaRequest{
     @JsonProperty("agencia")
     private String agencia;
-    @JsonProperty("numero_conta")
-    private String numero;
     @JsonProperty("id_usuario")
     private UUID idUsuario;
 }

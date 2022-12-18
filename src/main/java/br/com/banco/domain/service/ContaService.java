@@ -1,6 +1,7 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.adapter.out.db.repository.ContaRepository;
+import br.com.banco.domain.dto.ContaRequest;
 import br.com.banco.domain.dto.ContaResponse;
 import br.com.banco.domain.model.Conta;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,8 @@ public class ContaService{
     private final UsuarioService usuarioService;
 
 
-    public Conta getContaByAgenciaAndNumeroConta(String agencia, String numeroConta){
-        return contaRepository.findByAgenciaAndNumeroConta(agencia, numeroConta)
+    public Conta getContaByAgenciaAndNumero(String agencia, String numero){
+        return contaRepository.findByAgenciaAndNumero(agencia, numero)
                 .orElseThrow(() -> new RuntimeException("Conta nao encontrada!"));
     }
 
@@ -27,6 +28,10 @@ public class ContaService{
         return contaRepository.findAll();
     }
 
+    public ContaResponse getDadosConta(UUID id){
+        var conta = getContaById(id);
+        return buildContaResponse(conta);
+    }
 
     public Conta getContaById(UUID id){
         return contaRepository.findById(id)
@@ -34,14 +39,32 @@ public class ContaService{
     }
 
 
-    public Conta saveConta(ContaResponse contaResponse){
-        var usuario = usuarioService.getUsuariobyId(contaResponse.getIdUsuario());
-        return contaRepository.save(Conta.builder()
-                .agencia(contaResponse.getAgencia())
-                .numeroConta(contaResponse.getNumeroConta())
-                .saldo(contaResponse.getSaldo())
-                .usuario(usuario)
-                .build());
+    public ContaResponse saveConta(ContaRequest request){
+        var conta = gerarNovaConta(request);
+        contaRepository.save(conta);
+        return buildContaResponse(conta);
+    }
+
+    private Conta gerarNovaConta(ContaRequest request){
+        var usuario = usuarioService.getUsuariobyId(request.getIdUsuario());
+        var agencia = request.getAgencia();
+        var numero = gerarNumeroConta(agencia);
+        return new Conta(agencia, numero, usuario);
+    }
+
+    private String gerarNumeroConta(String agencia){
+        var count = contaRepository.countByAgencia(agencia);
+        return String.format("%07d", count + 1);
+
+    }
+
+    private ContaResponse buildContaResponse(Conta conta){
+        return ContaResponse.builder()
+                .id(conta.getId())
+                .agencia(conta.getAgencia())
+                .numero(conta.getNumero())
+                .idUsuario(conta.getUsuario().getId())
+                .build();
     }
 
     public void deleteConta(UUID id){

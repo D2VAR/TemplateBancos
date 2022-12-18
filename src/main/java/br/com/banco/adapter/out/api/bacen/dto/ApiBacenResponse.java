@@ -9,7 +9,7 @@ public class ApiBacenResponse{
     @JsonProperty("codigo_banco")
     private String codBanco;
     @JsonProperty("chave_existente")
-    private Boolean chaveExists;
+    private boolean chaveExists;
     @JsonProperty("tipo_chave")
     private TipoChave tipoChave;
     @JsonProperty("valor_chave")

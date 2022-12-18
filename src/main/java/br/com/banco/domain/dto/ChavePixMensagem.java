@@ -1,8 +1,8 @@
 package br.com.banco.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import br.com.banco.domain.enums.TipoChave;
 import br.com.banco.domain.model.Conta;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ChavePixMensagem {
+public class ChavePixMensagem{
     @JsonProperty("transaction_id")
     private String transactionId;
     @JsonProperty("codigo_banco")
@@ -28,10 +28,10 @@ public class ChavePixMensagem {
     @JsonProperty("valor_chave")
     private String valorChave;
 
-    public ChavePixMensagem(String valor, TipoChave tipo, Conta conta) {
+    public ChavePixMensagem(String valor, TipoChave tipo, Conta conta){
         this.valorChave = valor;
         this.tipoChave = tipo;
-        this.numeroConta = conta.getNumeroConta();
+        this.numeroConta = conta.getNumero();
         this.agenciaConta = conta.getAgencia();
         this.cpfCnpj = conta.getUsuario().getCpf();
         this.nome = conta.getUsuario().getNome();

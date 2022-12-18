@@ -3,13 +3,13 @@ package br.com.banco.domain.service;
 import br.com.banco.adapter.out.api.bacen.ApiBacen;
 import br.com.banco.adapter.out.db.repository.ChavePixRepository;
 import br.com.banco.domain.dto.ChavePixMensagem;
-import br.com.banco.domain.exceptions.ChavePixAlreadyExistException;
-import br.com.banco.domain.exceptions.ChavePixNotFoundException;
-import br.com.banco.port.in.CadastroChavePixInputPort;
-import br.com.banco.port.out.BacenProducerOutputPort;
 import br.com.banco.domain.dto.ChavePixRequest;
 import br.com.banco.domain.dto.ChavePixResponse;
+import br.com.banco.domain.exceptions.ChavePixAlreadyExistException;
+import br.com.banco.domain.exceptions.ChavePixNotFoundException;
 import br.com.banco.domain.model.ChavePix;
+import br.com.banco.port.in.CadastroChavePixInputPort;
+import br.com.banco.port.out.BacenProducerOutputPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,7 +39,7 @@ public class ChavePixService implements CadastroChavePixInputPort{
     }
 
     private ChavePix buildChavePixEntity(ChavePixMensagem chavePixMensagem){
-        var conta = contaService.getContaByAgenciaAndNumeroConta(chavePixMensagem.getAgenciaConta(), chavePixMensagem.getNumeroConta());
+        var conta = contaService.getContaByAgenciaAndNumero(chavePixMensagem.getAgenciaConta(), chavePixMensagem.getNumeroConta());
         return new ChavePix(chavePixMensagem.getValorChave(), chavePixMensagem.getTipoChave(), conta);
     }
 
@@ -64,7 +64,6 @@ public class ChavePixService implements CadastroChavePixInputPort{
             findByValor(valor);
             throw new ChavePixAlreadyExistException("Chave ja existente!");
         } catch (ChavePixNotFoundException e){
-            return;
         }
     }
 

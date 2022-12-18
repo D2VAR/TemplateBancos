@@ -1,4 +1,4 @@
-package com.itau.domain.exceptions;
+package br.com.banco.domain.exceptions;
 
 public class ChavePixNotFoundException extends RuntimeException {
     public ChavePixNotFoundException(String message) {

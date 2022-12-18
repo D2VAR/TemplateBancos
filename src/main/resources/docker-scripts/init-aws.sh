@@ -1,6 +1,0 @@
-#!/bin/bash
-echo "########### Creating table with global secondary index ###########"
-awslocal dynamodb create-table --table-name chaves-pix --attribute-definitions AttributeName=codigo_banco,AttributeType=S AttributeName=cpf_cnpj_valor_chave,AttributeType=S AttributeName=valor_chave,AttributeType=S --key-schema AttributeName=codigo_banco,KeyType=HASH AttributeName=cpf_cnpj_valor_chave,KeyType=RANGE --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --global-secondary-indexes "[{\"IndexName\": \"ChavePix-index\",\"KeySchema\": [{\"AttributeName\":\"valor_chave\",\"KeyType\":\"HASH\"}],\"Projection\":{\"ProjectionType\":\"ALL\"},\"ProvisionedThroughput\": {\"ReadCapacityUnits\": 5,\"WriteCapacityUnits\": 5}}]"
-echo "########### Creating item ###########"
-awslocal dynamodb put-item --table-name chaves-pix --item "{\"codigo_banco\":{\"S\":\"236\"},\"cpf_cnpj_valor_chave\":{\"S\":\"12345678901#teste@teste.com\"},\"cpf_cnpj\":{\"S\":\"12345678901\"},\"valor_chave\":{\"S\":\"teste@teste.com\"},\"nome\":{\"S\":\"Teste Chave Pix\"},\"numero_conta\":{\"S\":\"0123456\"},\"agencia_conta\":{\"S\":\"0123\"},\"tipo_chave\":{\"S\":\"EMAIL\"}}"
-echo "########### Finished! ###########"

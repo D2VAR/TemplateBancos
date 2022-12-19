@@ -1,7 +1,7 @@
 package br.com.banco.adapter.out.producer;
 
 import br.com.banco.domain.dto.transacao.TransacaoValidacaoResponse;
-import br.com.banco.port.out.ValidacaoTransacaoOutputPort;
+import br.com.banco.domain.exceptions.port.out.ValidaTransacaoPixOutputPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -9,17 +9,15 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ProducerValidacaoTransacaoPix implements ValidacaoTransacaoOutputPort {
+public class ProducerValidacaoTransacaoPix implements ValidaTransacaoPixOutputPort {
 
 
-    @Value("${topic.name.resultado.success}")
-    private String topicTransacaoSuccess;
-    @Value("${topic.name.resultado.fail}")
-    private String topicTransacaoFailure;
-    @Value("${topic.name.recebedor.retorno.success}")
-    private String topicRetornoSuccess;
-    @Value("${topic.name.recebedor.retorno.fail}")
-    private String topicRetornoFailure;
+    @Value("${topic.name.retorno.positivo}")
+
+    private String topicoRetornoPositivo;
+    @Value("${topic.name.retorno.negativo}")
+    private String topicoRetornoNegativo;
+
 
     private final KafkaTemplate<String, TransacaoValidacaoResponse> kafkaTemplate;
 
@@ -28,22 +26,24 @@ public class ProducerValidacaoTransacaoPix implements ValidacaoTransacaoOutputPo
     }
 
     @Override
-    public void notificaSucesso(TransacaoValidacaoResponse response) {
-        sendTransacaoPixResponseToTopic(response, topicRetornoSuccess);
-        sendTransacaoPixResponseToTopic(response, topicTransacaoSuccess);
-        log.info("#### Retorno Transacao Pix Sucesso- mensagem: {}", response);
+    public void enviarValidacaoPositiva(TransacaoValidacaoResponse response) {
+        sendValidacaoPixToTopic(response,topicoRetornoPositivo);
+        log.info("#### Retorno Transacao Pix positivo- mensagem: {}", response);
     }
 
     @Override
-    public void notificaFalha(TransacaoValidacaoResponse response) {
-        sendTransacaoPixResponseToTopic(response, topicRetornoFailure);
-        sendTransacaoPixResponseToTopic(response, topicTransacaoFailure);
-        log.info("#### Retorno Transacao Pix Falha - mensagem: {}", response);
+    public void enviarValidacaoNegativa(TransacaoValidacaoResponse response) {
+        sendValidacaoPixToTopic(response,topicoRetornoNegativo);
+        log.info("#### Retorno Transacao Pix negativo- mensagem: {}", response);
     }
 
-    private void sendTransacaoPixResponseToTopic(TransacaoValidacaoResponse response, String topic){
+
+
+    private void sendValidacaoPixToTopic(TransacaoValidacaoResponse response, String topic){
         kafkaTemplate.send(topic, response.getTransactionId(), response);
         kafkaTemplate.flush();
     }
+
+
 
 }

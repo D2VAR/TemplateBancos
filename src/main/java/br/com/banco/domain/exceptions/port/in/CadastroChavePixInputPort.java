@@ -1,4 +1,4 @@
-package br.com.banco.port.in;
+package br.com.banco.domain.exceptions.port.in;
 
 import br.com.banco.domain.dto.chave.ChavePixMensagem;
 import br.com.banco.domain.dto.chave.ChavePixRequest;

@@ -1,7 +1,8 @@
 package br.com.banco.adapter.in.consumer;
 
-import br.com.banco.domain.dto.transacao.TransacaoValidacaoRequest;
-import br.com.banco.port.in.ValidacaoTransacaoInputPort;
+
+import br.com.banco.domain.dto.transacao.TransacaoPixRequest;
+import br.com.banco.domain.exceptions.port.in.ValidaTransacaoPixInputPort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +16,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ValidacaoTransacaoPixConsumer {
+    private final ValidaTransacaoPixInputPort envioTransacaoPixInputPort;
 
-
-    private final ValidacaoTransacaoInputPort validacaoTransacaoInputPort;
-
-    @KafkaListener(id="${spring.kafka.consumer.group-id1}", topics = "${topic.name.recebedor.retorno.success}")
-    public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
+    @KafkaListener(id="id=${spring.kafka.consumer.group-id1}", topics = "${topic.name.recebedor}")
+    public void listen(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
         try {
-            var request = processConsumerRecord(mensagemKafka);
-            validacaoTransacaoInputPort.retornarSucesso(request);
+            processConsumerRecord(mensagemKafka);
         } catch (JsonProcessingException ex) {
             log.error("#### Error consuming message -> {},{}", ex.getMessage(), ex.getStackTrace());
         } finally {
@@ -31,22 +29,12 @@ public class ValidacaoTransacaoPixConsumer {
         }
     }
 
-    @KafkaListener(id="${spring.kafka.consumer.group-id1}", topics = "${topic.name.recebedor.retorno.fail}")
-    public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
-        try {
-            var request = processConsumerRecord(mensagemKafka);
-            validacaoTransacaoInputPort.retornarFalha(request);
-        } catch (JsonProcessingException ex) {
-            log.error("#### Error consuming message -> {},{}", ex.getMessage(), ex.getStackTrace());
-        } finally {
-            ack.acknowledge();
-        }
-    }
-
-    private TransacaoValidacaoRequest processConsumerRecord(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
+    private void processConsumerRecord(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
         log.info("#### Message consumed -> {}, topic -> {}", mensagemKafka.value(), mensagemKafka.topic());
-        var request = new ObjectMapper().readValue(mensagemKafka.value(), TransacaoValidacaoRequest .class);
-        return request;
+        var request = new ObjectMapper().readValue(mensagemKafka.value(), TransacaoPixRequest.class);
+        envioTransacaoPixInputPort.validarTransacaoPix(request);
     }
+
 
 }
+

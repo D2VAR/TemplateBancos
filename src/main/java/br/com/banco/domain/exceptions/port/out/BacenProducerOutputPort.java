@@ -1,4 +1,4 @@
-package br.com.banco.port.out;
+package br.com.banco.domain.exceptions.port.out;
 
 import br.com.banco.domain.model.ChavePix;
 

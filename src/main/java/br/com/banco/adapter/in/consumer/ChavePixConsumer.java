@@ -2,7 +2,7 @@ package br.com.banco.adapter.in.consumer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.banco.domain.dto.chave.ChavePixMensagem;
-import br.com.banco.port.in.CadastroChavePixInputPort;
+import br.com.banco.domain.exceptions.port.in.CadastroChavePixInputPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

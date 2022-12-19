@@ -56,4 +56,11 @@ topic:
     retorno:
       fail: topico-retorno-cadastro-chave-pix-falha
       success: topico-retorno-cadastro-chave-pix-ok
+      negativo: topico-retorno-cadastro-chave-pix-falha
+      positivo: topico-retorno-cadastro-chave-pix-ok
+    recebedor: topico-recebedor-envio-transacao-pix
+
+
+
+
 

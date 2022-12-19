@@ -1,7 +1,7 @@
 package br.com.banco.adapter.out.producer;
 
 
-import br.com.banco.port.out.BacenProducerOutputPort;
+import br.com.banco.domain.exceptions.port.out.BacenProducerOutputPort;
 import br.com.banco.domain.dto.chave.ChavePixMensagem;
 import br.com.banco.domain.mapper.ChavePixMapper;
 import br.com.banco.domain.model.ChavePix;

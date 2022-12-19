@@ -1,42 +1,42 @@
 package br.com.banco.domain.service;
 
+import br.com.banco.adapter.out.db.repository.ChavePixRepository;
 import br.com.banco.domain.dto.transacao.TransacaoPixRequest;
-import br.com.banco.domain.dto.transacao.TransacaoValidacaoRequest;
+import br.com.banco.domain.dto.transacao.TransacaoValidacaoResponse;
+import br.com.banco.domain.exceptions.ChavePixNotFoundException;
 import br.com.banco.domain.mapper.TransacaoPixMapper;
-import br.com.banco.port.in.EnvioTransacaoPixInputPort;
-import br.com.banco.port.in.ValidacaoTransacaoInputPort;
-import br.com.banco.port.out.EnvioTransacaoPixOutputPort;
-import br.com.banco.port.out.ValidacaoTransacaoOutputPort;
+import br.com.banco.domain.exceptions.port.in.ValidaTransacaoPixInputPort;
+import br.com.banco.domain.exceptions.port.out.ValidaTransacaoPixOutputPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TransacaoPixService implements EnvioTransacaoPixInputPort, ValidacaoTransacaoInputPort {
+public class TransacaoPixService implements ValidaTransacaoPixInputPort{
 
 
-    private final EnvioTransacaoPixOutputPort envioTransacaoPixOutputPort;
-    private final ValidacaoTransacaoOutputPort validacaoOutputPort;
+    private final ValidaTransacaoPixOutputPort validaTransacaoPixOutputPort;
+
 
     private final TransacaoPixMapper mapper;
+    private final ChavePixRepository repository;
+
+
 
     @Override
-    public void enviarTransacaoPix(TransacaoPixRequest request) {
-
+    public void validarTransacaoPix(TransacaoPixRequest request) {
         var response = mapper.requestToResponse(request);
-        envioTransacaoPixOutputPort.enviarPix(response);
-    }
+        validaChave(response);
+        response.setPixRealizado(Boolean.TRUE);
+        validaTransacaoPixOutputPort.enviarValidacaoPositiva(response);
 
-    @Override
-    public void retornarSucesso(TransacaoValidacaoRequest request) {
-        var response = mapper.validacaoToResponse(request);
-        validacaoOutputPort.notificaSucesso(response);
     }
-
-    @Override
-    public void retornarFalha(TransacaoValidacaoRequest request) {
-        var response = mapper.validacaoToResponse(request);
-        validacaoOutputPort.notificaFalha(response);
+    private void validaChave(TransacaoValidacaoResponse response){
+        var keyExists = repository.findByValor(response.getChaveDestino());
+        if (keyExists.isEmpty()){
+            response.setPixRealizado(Boolean.FALSE);
+            validaTransacaoPixOutputPort.enviarValidacaoNegativa(response);
+            throw new ChavePixNotFoundException("Chave destino não encontrada. Falha na transaçao");
+        }
     }
-
 }

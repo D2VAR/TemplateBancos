@@ -1,7 +1,7 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.ChavePixRequest;
-import br.com.banco.domain.dto.ChavePixResponse;
+import br.com.banco.domain.dto.chave.ChavePixRequest;
+import br.com.banco.domain.dto.chave.ChavePixResponse;
 import br.com.banco.domain.mapper.ChavePixMapper;
 import br.com.banco.domain.model.ChavePix;
 import br.com.banco.domain.service.ChavePixService;

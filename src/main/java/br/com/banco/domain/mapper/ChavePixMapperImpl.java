@@ -1,7 +1,7 @@
 package br.com.banco.domain.mapper;
 
-import br.com.banco.domain.dto.ChavePixMensagem;
-import br.com.banco.domain.dto.ChavePixResponse;
+import br.com.banco.domain.dto.chave.ChavePixMensagem;
+import br.com.banco.domain.dto.chave.ChavePixResponse;
 import br.com.banco.domain.model.ChavePix;
 import org.springframework.stereotype.Component;
 

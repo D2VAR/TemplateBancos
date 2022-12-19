@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.usuario;
 
 import br.com.banco.domain.model.Usuario;
 import lombok.AllArgsConstructor;

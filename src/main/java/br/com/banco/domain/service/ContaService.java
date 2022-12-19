@@ -1,7 +1,7 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.adapter.out.db.repository.ContaRepository;
-import br.com.banco.domain.dto.ContaResponse;
+import br.com.banco.domain.dto.conta.ContaResponse;
 import br.com.banco.domain.model.Conta;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

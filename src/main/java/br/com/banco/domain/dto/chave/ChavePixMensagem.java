@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.chave;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import br.com.banco.domain.enums.TipoChave;

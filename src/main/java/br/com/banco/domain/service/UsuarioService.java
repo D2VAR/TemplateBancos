@@ -1,8 +1,8 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.adapter.out.db.repository.UsuarioRepository;
-import br.com.banco.domain.dto.AtualizaUsuarioDTO;
-import br.com.banco.domain.dto.UsuarioResponseDTO;
+import br.com.banco.domain.dto.usuario.AtualizaUsuarioDTO;
+import br.com.banco.domain.dto.usuario.UsuarioResponseDTO;
 import br.com.banco.domain.model.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

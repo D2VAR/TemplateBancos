@@ -48,7 +48,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ''
     username: root
-    url: jdbc:mysql://mysql-itau:3306/itau
+    url: jdbc:mysql://localhost:3307/itau
 
 topic:
   name:

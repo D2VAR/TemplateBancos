@@ -1,6 +1,6 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.ContaResponse;
+import br.com.banco.domain.dto.conta.ContaResponse;
 import br.com.banco.domain.model.Conta;
 import br.com.banco.domain.service.ContaService;
 import lombok.RequiredArgsConstructor;

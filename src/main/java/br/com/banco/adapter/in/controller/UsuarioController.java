@@ -1,7 +1,7 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.AtualizaUsuarioDTO;
-import br.com.banco.domain.dto.UsuarioResponseDTO;
+import br.com.banco.domain.dto.usuario.AtualizaUsuarioDTO;
+import br.com.banco.domain.dto.usuario.UsuarioResponseDTO;
 import br.com.banco.domain.model.Usuario;
 import br.com.banco.domain.service.UsuarioService;
 import lombok.RequiredArgsConstructor;

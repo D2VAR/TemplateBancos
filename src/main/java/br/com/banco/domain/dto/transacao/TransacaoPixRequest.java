@@ -1,6 +1,7 @@
 package br.com.banco.domain.dto.transacao;
 
 
+import br.com.banco.domain.enums.TipoChave;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -18,10 +19,12 @@ public class TransacaoPixRequest {
     private String nome;
     @JsonProperty("cpf_cnpj")
     private String cpfCnpj;
+    @JsonProperty("tipo_chave")
+    private TipoChave tipoChave;
     @JsonProperty("chave_destino")
     private String chaveDestino;
     @JsonProperty("valor_transferencia")
     private BigDecimal valor;
-    @JsonProperty("codigo_banco_destino")
-    private String codBancoDestino;
+    @JsonProperty("codigo_banco_origem")
+    private String codBancoOrigem;
 }

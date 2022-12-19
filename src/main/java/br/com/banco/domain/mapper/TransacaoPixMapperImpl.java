@@ -15,7 +15,7 @@ public class TransacaoPixMapperImpl implements TransacaoPixMapper{
 
     @Override
     public TransacaoValidacaoResponse requestToResponse(TransacaoPixRequest request) {
-        return new TransacaoValidacaoResponse(request.getTransactionId(), request.getNome(), request.getCpfCnpj(), request.getChaveDestino(),
-                request.getValor(), request.getCodBancoDestino());
+        return new TransacaoValidacaoResponse(request.getTransactionId(), request.getNome(), request.getCpfCnpj(), request.getTipoChave(),request.getChaveDestino(),
+                request.getValor(), request.getCodBancoOrigem());
     }
 }

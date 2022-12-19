@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 public class TransacaoPixMensagem {
     @JsonProperty("transaction_id")
     private String transactionId;
-    @JsonProperty("codigo_banco")
-    private String codBanco;
+    @JsonProperty("codigo_banco_origem")
+    private String codBancoOrigem;
     @JsonProperty("cpf_cnpj")
     private String cpfCnpj;
     @JsonProperty("nome")
@@ -26,20 +26,20 @@ public class TransacaoPixMensagem {
 
     @JsonProperty("tipo_chave")
     private TipoChave tipoChave;
-    @JsonProperty("valor_chave")
-    private String valorChave;
+    @JsonProperty("chave_destino")
+    private String chaveDestino;
     @JsonProperty("valor")
     private BigDecimal valor;
 
 
     public TransacaoPixMensagem(TransacaoPix transacaoPix) {
-        this.valorChave = getValorChave();
+        this.chaveDestino = getChaveDestino();
         this.valor = getValor();
     }
 
     private TransacaoPixMensagem(Conta conta) {
         this(conta.getUsuario());
-        this.codBanco = conta.getBanco();
+        this.codBancoOrigem = conta.getBanco();
 
     }
 

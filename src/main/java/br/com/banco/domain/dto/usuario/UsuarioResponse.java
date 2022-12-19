@@ -12,8 +12,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioResponseDTO {
-
+public class UsuarioResponse{
     private UUID id;
     private String cpf;
     private String nome;
@@ -21,7 +20,7 @@ public class UsuarioResponseDTO {
     private String email;
 
 
-    public UsuarioResponseDTO(Usuario usuario) {
+    public UsuarioResponse(Usuario usuario){
         this.id = usuario.getId();
         this.cpf = usuario.getCpf();
         this.nome = usuario.getNome();

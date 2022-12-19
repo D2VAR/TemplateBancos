@@ -1,10 +1,12 @@
 package br.com.banco.adapter.out.api.bacen.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import br.com.banco.domain.enums.TipoChave;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class ApiBacenResponse{
     @JsonProperty("codigo_banco")
     private String codBanco;

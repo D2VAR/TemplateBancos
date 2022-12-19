@@ -1,8 +1,8 @@
-package br.com.banco.domain.exceptions.port.out;
+package br.com.banco.port.out;
 
 import br.com.banco.domain.dto.transacao.TransacaoValidacaoResponse;
 
-public interface ValidaTransacaoPixOutputPort {
+public interface ValidaTransacaoPixOutputPort{
 
     void enviarValidacaoPositiva(TransacaoValidacaoResponse response);
 

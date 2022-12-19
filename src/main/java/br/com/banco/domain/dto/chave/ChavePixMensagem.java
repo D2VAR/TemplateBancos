@@ -1,8 +1,10 @@
 package br.com.banco.domain.dto.chave;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import br.com.banco.domain.enums.TipoChave;
+import br.com.banco.domain.model.ChavePix;
 import br.com.banco.domain.model.Conta;
+import br.com.banco.domain.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
@@ -10,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ChavePixMensagem {
+public class ChavePixMensagem{
     @JsonProperty("transaction_id")
     private String transactionId;
     @JsonProperty("codigo_banco")
@@ -28,14 +30,24 @@ public class ChavePixMensagem {
     @JsonProperty("valor_chave")
     private String valorChave;
 
-    public ChavePixMensagem(String valor, TipoChave tipo, Conta conta) {
-        this.valorChave = valor;
-        this.tipoChave = tipo;
-        this.numeroConta = conta.getNumeroConta();
+    public ChavePixMensagem(ChavePix chavePix){
+        this(chavePix.getConta());
+        this.valorChave = chavePix.getValor();
+        this.tipoChave = chavePix.getTipo();
+    }
+
+    private ChavePixMensagem(Conta conta){
+        this(conta.getUsuario());
+        this.numeroConta = conta.getNumero();
         this.agenciaConta = conta.getAgencia();
-        this.cpfCnpj = conta.getUsuario().getCpf();
-        this.nome = conta.getUsuario().getNome();
         this.codBanco = conta.getBanco();
 
     }
+
+    private ChavePixMensagem(Usuario usuario){
+        this.cpfCnpj = usuario.getCpf();
+        this.nome = usuario.getNome();
+    }
+
+
 }

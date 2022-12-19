@@ -9,6 +9,8 @@ import java.util.UUID;
 
 @Repository
 public interface ContaRepository extends JpaRepository<Conta, UUID>{
-    Optional<Conta> findByAgenciaAndNumeroConta(String agencia, String numeroConta);
+    Optional<Conta> findByAgenciaAndNumero(String agencia, String numero);
+
+    Long countByAgencia(String agencia);
 }
 

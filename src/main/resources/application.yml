@@ -31,8 +31,9 @@ spring:
             trusted:
               packages: '*'
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id1: group-itau1
-      group-id2: group-itau2
+      group-id:
+        success: itau-pix-consumer-success
+        failure: itau-pix-consumer-failure
 
     listener:
       ack-mode: MANUAL
@@ -48,7 +49,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ''
     username: root
-    url: jdbc:mysql://localhost:3307/itau
+    url: jdbc:mysql://mysql-itau:3306/itau
 
 topic:
   name:

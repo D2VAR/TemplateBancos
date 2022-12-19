@@ -2,7 +2,7 @@ package br.com.banco.adapter.in.consumer;
 
 
 import br.com.banco.domain.dto.transacao.TransacaoPixRequest;
-import br.com.banco.domain.exceptions.port.in.ValidaTransacaoPixInputPort;
+import br.com.banco.port.in.ValidaTransacaoPixInputPort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ValidacaoTransacaoPixConsumer {
+public class ValidacaoTransacaoPixConsumer{
     private final ValidaTransacaoPixInputPort envioTransacaoPixInputPort;
 
-    @KafkaListener(id="id=${spring.kafka.consumer.group-id1}", topics = "${topic.name.recebedor}")
-    public void listen(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
-        try {
+    @KafkaListener(id = "id=${spring.kafka.consumer.group-id1}", topics = "${topic.name.recebedor}")
+    public void listen(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
+        try{
             processConsumerRecord(mensagemKafka);
-        } catch (JsonProcessingException ex) {
+        } catch (JsonProcessingException ex){
             log.error("#### Error consuming message -> {},{}", ex.getMessage(), ex.getStackTrace());
-        } finally {
+        } finally{
             ack.acknowledge();
         }
     }

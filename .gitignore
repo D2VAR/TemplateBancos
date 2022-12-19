@@ -22,8 +22,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-.idea
-idea
-target
+
+#mysql
 mysql-data
+
+#maven
 mvn*
+pom.properties
+
+#intellij
+*.iml
+.idea
+target

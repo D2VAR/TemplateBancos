@@ -22,6 +22,16 @@ public class UsuarioService{
         return buildUsuarioResponse(usuario);
     }
 
+    public UsuarioResponse getUsuario(String cpf){
+        var usuario = getUsuarioByCpf(cpf);
+        return buildUsuarioResponse(usuario);
+    }
+
+    public Usuario getUsuarioByCpf(String cpf){
+        return usuarioRepository.findByCpf(cpf).orElseThrow(
+                () -> new UsuarioNotFoundException("Usuario nao encontrado!"));
+    }
+
     public Usuario getUsuariobyId(UUID id){
         return usuarioRepository.findById(id).orElseThrow(
                 () -> new UsuarioNotFoundException("Usuario nao encontrado!"));

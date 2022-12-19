@@ -20,5 +20,4 @@ public class ChavePixController{
         chavePixService.cadastrarChaveBacen(chavePixRequest);
         return ResponseEntity.noContent().build();
     }
-
 }

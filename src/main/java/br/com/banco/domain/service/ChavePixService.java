@@ -57,7 +57,6 @@ public class ChavePixService implements CadastroChavePixInputPort{
         validarExistenciaChavePixInterna(chavePix.getValorChave());
         var entity = chavePixMensagemToModel(chavePix);
         save(entity);
-        //TODO: enviar notificacao ao cliente
     }
 
     private void validarExistenciaChavePixInterna(String valor){

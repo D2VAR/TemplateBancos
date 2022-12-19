@@ -13,22 +13,23 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/conta")
 @RequiredArgsConstructor
-public class ContaController{
+public class ContaController {
     private final ContaService contaService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContaResponse> getContaById(@PathVariable UUID id){
+    public ResponseEntity<ContaResponse> getContaById(@PathVariable UUID id) {
         return ResponseEntity.ok(contaService.getDadosConta(id));
     }
 
     @PostMapping
-    public ResponseEntity<ContaResponse> saveConta(@RequestBody ContaRequest request){
+    public ResponseEntity<ContaResponse> saveConta(@RequestBody ContaRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(contaService.saveConta(request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteConta(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteConta(@PathVariable UUID id) {
         contaService.deleteConta(id);
         return ResponseEntity.noContent().build();
     }
+
 }

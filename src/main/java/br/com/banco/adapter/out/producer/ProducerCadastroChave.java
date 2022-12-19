@@ -16,25 +16,25 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProducerCadastroChave implements BacenProducerOutputPort{
+public class ProducerCadastroChave implements BacenProducerOutputPort {
     @Value("${topic.name.envio}")
     private String topico;
     private final KafkaTemplate<String, ChavePixMensagem> kafkaTemplate;
 
     @Override
-    public void enviarMensagemCadastroChave(ChavePix chavePix){
+    public void enviarMensagemCadastroChave(ChavePix chavePix) {
         var mensagem = buildChavePixMensagem(chavePix);
         sendChavePixMensagemToKafka(mensagem);
     }
 
-    private void sendChavePixMensagemToKafka(ChavePixMensagem mensagem){
+    private void sendChavePixMensagemToKafka(ChavePixMensagem mensagem) {
         kafkaTemplate.send(topico, mensagem);
         log.info("## Mensagem de cadastro de chave enviada ao BACEN - Transaction Id: {}, Chave: {}",
                 mensagem.getTransactionId(), mensagem.getValorChave());
         kafkaTemplate.flush();
     }
 
-    private ChavePixMensagem buildChavePixMensagem(ChavePix chavePix){
+    private ChavePixMensagem buildChavePixMensagem(ChavePix chavePix) {
         var mensagem = new ChavePixMensagem(chavePix);
         mensagem.setTransactionId(UUID.randomUUID().toString());
         return mensagem;

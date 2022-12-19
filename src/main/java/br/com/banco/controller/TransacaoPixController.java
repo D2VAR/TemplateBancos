@@ -1,7 +1,6 @@
 package br.com.banco.controller;
 
 import br.com.banco.domain.dto.TransacaoPixRequest;
-import br.com.banco.domain.dto.TransacaoPixResponse;
 import br.com.banco.domain.service.TransacaoPixService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +17,8 @@ public class TransacaoPixController {
     private final TransacaoPixService transacaoPixService;
 
     @PostMapping
-    public ResponseEntity<TransacaoPixResponse> envioPix(@RequestBody TransacaoPixRequest transacaoPixRequest) {
-        TransacaoPixResponse transacaoPixResponse = transacaoPixService.enviaPix(transacaoPixRequest);
-        return ResponseEntity.ok(transacaoPixResponse);
+    public ResponseEntity<Void> envioPix(@RequestBody TransacaoPixRequest transacaoPixRequest) {
+        transacaoPixService.enviaPix(transacaoPixRequest);
+        return ResponseEntity.noContent().build();
     }
 }

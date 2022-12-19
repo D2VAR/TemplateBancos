@@ -21,19 +21,6 @@ public class ProducerTransacao implements TransacaoBacenProducerOutputPort {
     private String topico;
     private final KafkaTemplate<String, TransacaoPixMensagem> kafkaTemplate;
 
-    private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem){
-        kafkaTemplate.send(topico, mensagem);
-        log.info("## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
-                mensagem.getTransactionId(), mensagem.getValorChave());
-        kafkaTemplate.flush();
-    }
-
-    private TransacaoPixMensagem buildTransacaoPixMensagem(TransacaoPix transacaoPix){
-        var mensagem = new TransacaoPixMensagem(transacaoPix);
-        mensagem.setTransactionId(UUID.randomUUID().toString());
-        return mensagem;
-    }
-
 
     @Override
     public void enviarMensagemTransacaoPix(TransacaoPix transacaoPix) {
@@ -41,6 +28,21 @@ public class ProducerTransacao implements TransacaoBacenProducerOutputPort {
         sendTransacaoPixMensagemToKafka(mensagem);
 
     }
+
+    private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem) {
+        kafkaTemplate.send(topico, mensagem);
+        log.info("## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
+                mensagem.getTransactionId(), mensagem.getChaveDestino());
+        kafkaTemplate.flush();
+    }
+
+    private TransacaoPixMensagem buildTransacaoPixMensagem(TransacaoPix transacaoPix) {
+        var mensagem = new TransacaoPixMensagem(transacaoPix);
+        mensagem.setTransactionId(UUID.randomUUID().toString());
+        return mensagem;
+    }
+
+
 }
 
 

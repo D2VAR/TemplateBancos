@@ -19,38 +19,31 @@ public class TransacaoPixMensagem {
     private String transactionId;
     @JsonProperty("codigo_banco")
     private String codBanco;
-    @JsonProperty("numero_conta")
-    private String numeroConta;
-    @JsonProperty("agencia_conta")
-    private String agenciaConta;
     @JsonProperty("cpf_cnpj")
     private String cpfCnpj;
     @JsonProperty("nome")
     private String nome;
+
     @JsonProperty("tipo_chave")
     private TipoChave tipoChave;
     @JsonProperty("valor_chave")
     private String valorChave;
-
     @JsonProperty("valor")
     private BigDecimal valor;
 
 
-
-    public TransacaoPixMensagem(TransacaoPix transacaoPix){
+    public TransacaoPixMensagem(TransacaoPix transacaoPix) {
         this.valorChave = getValorChave();
-        this.valor=getValor();
+        this.valor = getValor();
     }
 
-    private TransacaoPixMensagem(Conta conta){
+    private TransacaoPixMensagem(Conta conta) {
         this(conta.getUsuario());
-        this.numeroConta = conta.getNumero();
-        this.agenciaConta = conta.getAgencia();
         this.codBanco = conta.getBanco();
 
     }
 
-    private TransacaoPixMensagem(Usuario usuario){
+    private TransacaoPixMensagem(Usuario usuario) {
         this.cpfCnpj = usuario.getCpf();
         this.nome = usuario.getNome();
     }

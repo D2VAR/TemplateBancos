@@ -3,6 +3,7 @@ package br.com.banco.domain.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Getter
@@ -12,10 +13,10 @@ import java.util.UUID;
 @Entity
 @Builder
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @org.hibernate.annotations.Type(type="org.hibernate.type.UUIDCharType")
+    @org.hibernate.annotations.Type(type = "org.hibernate.type.UUIDCharType")
     @Column(name = "id", updatable = false, unique = true, nullable = false, columnDefinition = "varChar(100)")
     private UUID id;
     @Column(name = "nome", nullable = false, length = 200)

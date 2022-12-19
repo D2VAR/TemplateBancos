@@ -1,9 +1,9 @@
 package br.com.banco.adapter.in.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.banco.domain.dto.ChavePixMensagem;
 import br.com.banco.port.in.CadastroChavePixInputPort;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -18,21 +18,34 @@ public class ChavePixConsumer{
 
     private final CadastroChavePixInputPort inputPort;
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id1}", topics = "${topic.name.retorno.success}")
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.name.retorno.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
-        consumeSuccessMessage(mensagemKafka);
-        ack.acknowledge();
+        try{
+            var mensagem = parseStringToChavePixMensagem(mensagemKafka);
+            inputPort.cadastrarChaveInterna(mensagem);
+            log.info("### Mensagem de sucesso consumida! -> Transaction Id: {}, Chave Pix: {}",
+                    mensagem.getTransactionId(), mensagem.getValorChave());
+            //TODO: adicionar notificacao ao cliente
+        } catch (JsonProcessingException ex){
+            log.error("### Erro ao processar mensagem de sucesso! -> {}, erro -> {}",
+                    mensagemKafka.value(), ex.getMessage());
+        } finally{
+            ack.acknowledge();
+        }
     }
 
-    private void consumeSuccessMessage(ConsumerRecord<String, String> mensagemKafka){
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.failure}", topics = "${topic.name.retorno.fail}")
+    public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
-            log.info("#### Consumindo mensagem de sucesso! -> {}, topic -> {}",
-                    mensagemKafka.value(), mensagemKafka.topic());
-            ChavePixMensagem chavePixMensagem = parseStringToChavePixMensagem(mensagemKafka);
-            inputPort.cadastrarChaveInterna(chavePixMensagem);
+            var mensagem = parseStringToChavePixMensagem(mensagemKafka);
+            log.info("### Mensagem de falha consumida! -> Transaction Id: {}, Chave Pix: {}",
+                    mensagem.getTransactionId(), mensagem.getValorChave());
+            //TODO: adicionar notificacao ao cliente
         } catch (JsonProcessingException ex){
-            log.error("#### Erro ao processar mensagem de sucesso! -> {}, erro -> {}",
-                    mensagemKafka.value(), ex.getMessage());
+            log.error("### Erro ao processar mensagem de falha! -> {}, erro -> {}",
+                    mensagemKafka.key(), ex.getMessage());
+        } finally{
+            ack.acknowledge();
         }
     }
 
@@ -40,20 +53,4 @@ public class ChavePixConsumer{
         return new ObjectMapper().readValue(mensagemKafka.value(), ChavePixMensagem.class);
     }
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id2}", topics = "${topic.name.retorno.fail}")
-    public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
-        consumeFailureMessage(mensagemKafka);
-        ack.acknowledge();
-    }
-
-    private void consumeFailureMessage(ConsumerRecord<String, String> mensagemKafka){
-        try{
-            log.info("#### Consumindo mensagem de falha! -> {}, topic -> {}",
-                    mensagemKafka.value(), mensagemKafka.topic());
-            parseStringToChavePixMensagem(mensagemKafka);
-        } catch (JsonProcessingException ex){
-            log.error("#### Erro ao processar mensagem de falha! -> {}, erro -> {}",
-                    mensagemKafka.value(), ex.getMessage());
-        }
-    }
 }

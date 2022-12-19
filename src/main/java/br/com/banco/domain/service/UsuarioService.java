@@ -1,69 +1,75 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.adapter.out.db.repository.UsuarioRepository;
-import br.com.banco.domain.dto.AtualizaUsuarioDTO;
-import br.com.banco.domain.dto.UsuarioResponseDTO;
+import br.com.banco.domain.dto.UsuarioRequest;
+import br.com.banco.domain.dto.UsuarioResponse;
+import br.com.banco.domain.exceptions.UsuarioNotFoundException;
 import br.com.banco.domain.model.Usuario;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
-public class UsuarioService  {
-
+@RequiredArgsConstructor
+public class UsuarioService{
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+
+    public UsuarioResponse getUsuario(UUID id){
+        var usuario = getUsuariobyId(id);
+        return buildUsuarioResponse(usuario);
     }
 
-
-    public List<Usuario> listAllUsuarios() {
-        return usuarioRepository.findAll();
+    public Usuario getUsuariobyId(UUID id){
+        return usuarioRepository.findById(id).orElseThrow(
+                () -> new UsuarioNotFoundException("Usuario nao encontrado!"));
     }
 
-
-    public Usuario getUsuariobyId(UUID id) {
-        return usuarioRepository.findById(id).orElseThrow(()->new RuntimeException("Usuario nao encontrado!"));
+    private static UsuarioResponse buildUsuarioResponse(Usuario usuario){
+        return new UsuarioResponse(usuario);
     }
 
-
-    public Usuario saveUsuario(UsuarioResponseDTO usuarioResponseDTO) {
-        return usuarioRepository.save(Usuario.builder()
-                .nome(usuarioResponseDTO.getNome())
-                .cpf(usuarioResponseDTO.getCpf())
-                .telefone(usuarioResponseDTO.getTelefone())
-                .email(usuarioResponseDTO.getEmail())
-                .build());
-
-
+    public UsuarioResponse saveUsuario(UsuarioRequest request){
+        var usuarioSalvo = usuarioRepository.save(buildUsuario(request));
+        return buildUsuarioResponse(usuarioSalvo);
     }
-    public void deletePorId(UUID id) {
+
+    private static Usuario buildUsuario(UsuarioRequest request){
+        return Usuario.builder()
+                .nome(request.getNome())
+                .cpf(request.getCpf())
+                .telefone(request.getTelefone())
+                .email(request.getEmail())
+                .build();
+    }
+
+    public void deletePorId(UUID id){
         getUsuariobyId(id);
         usuarioRepository.deleteById(id);
     }
 
-    public ResponseEntity<UsuarioResponseDTO> updateById(@PathVariable UUID id, @RequestBody AtualizaUsuarioDTO atualizaUsuarioDTO){
-        Optional<Usuario> optional = usuarioRepository.findById(id);
-        if(optional.isPresent()){
-            Usuario usuario = optional.get();
-            if(atualizaUsuarioDTO.getNome() != null) {
-                usuario.setNome(atualizaUsuarioDTO.getNome());
-            }
-            if(atualizaUsuarioDTO.getTelefone() != null) {
-                usuario.setTelefone(atualizaUsuarioDTO.getTelefone());
-            }
-            if(atualizaUsuarioDTO.getEmail() != null) {
-                usuario.setEmail(atualizaUsuarioDTO.getEmail());
-            }
-            usuarioRepository.save(usuario);
-            return ResponseEntity.ok(new UsuarioResponseDTO(usuario));
-        }
-        return ResponseEntity.notFound().build();
+    public UsuarioResponse updateById(UUID id, UsuarioRequest request){
+        var usuario = getUsuariobyId(id);
+        validateAndUpdateAttributes(request, usuario);
+        var usuarioUpdated = usuarioRepository.save(usuario);
+        return buildUsuarioResponse(usuarioUpdated);
+    }
+
+    private void validateAndUpdateAttributes(UsuarioRequest request, Usuario usuario){
+        if (notNullAndNotBlank(request.getNome()))
+            usuario.setNome(request.getNome());
+
+        if (notNullAndNotBlank(request.getTelefone()))
+            usuario.setNome(request.getTelefone());
+
+        if (notNullAndNotBlank(request.getEmail()))
+            usuario.setNome(request.getEmail());
+    }
+
+    private boolean notNullAndNotBlank(String attribute){
+        return Objects.nonNull(attribute) && !attribute.isBlank();
     }
 
 }

@@ -4,18 +4,18 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Builder
 @Table(name = "contas")
-public class Conta{
-
+public class Conta implements Serializable{
     @Id
     @GeneratedValue
     @Type(type = "org.hibernate.type.UUIDCharType")
@@ -35,5 +35,6 @@ public class Conta{
         this.agencia = agencia;
         this.numero = numero;
         this.usuario = usuario;
+        this.saldo = BigDecimal.ZERO;
     }
 }

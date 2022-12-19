@@ -1,10 +1,10 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.AtualizaUsuarioDTO;
-import br.com.banco.domain.dto.UsuarioResponseDTO;
-import br.com.banco.domain.model.Usuario;
+import br.com.banco.domain.dto.UsuarioRequest;
+import br.com.banco.domain.dto.UsuarioResponse;
 import br.com.banco.domain.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +17,19 @@ public class UsuarioController{
     private final UsuarioService usuarioService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getUsuariobyId(@PathVariable UUID id){
-        return ResponseEntity.ok(usuarioService.getUsuariobyId(id));
+    public ResponseEntity<UsuarioResponse> getUsuariobyId(@PathVariable UUID id){
+        return ResponseEntity.ok(usuarioService.getUsuario(id));
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> saveUsuario(@RequestBody UsuarioResponseDTO usuarioResponseDTO){
-        return ResponseEntity.ok(usuarioService.saveUsuario(usuarioResponseDTO));
+    public ResponseEntity<UsuarioResponse> saveUsuario(@RequestBody UsuarioRequest requestBody){
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.saveUsuario(requestBody));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> updateById(@PathVariable UUID id, @RequestBody AtualizaUsuarioDTO atualizaUsuarioDTO){
-        return usuarioService.updateById(id, atualizaUsuarioDTO);
-
+    public ResponseEntity<UsuarioResponse> updateById(@PathVariable UUID id, @RequestBody UsuarioRequest requestBody){
+        usuarioService.updateById(id, requestBody);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

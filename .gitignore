@@ -28,6 +28,7 @@ mysql-data
 
 #maven
 mvn*
+pom.properties
 
 #intellij
 *.iml

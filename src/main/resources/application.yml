@@ -65,7 +65,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ''
     username: root
-    url: jdbc:mysql://mysql:3306/itau
+    url: jdbc:mysql://mysql-itau:3306/itau
 
 topic:
   name:
@@ -73,4 +73,14 @@ topic:
     retorno:
       fail: topico-retorno-cadastro-chave-pix-falha
       success: topico-retorno-cadastro-chave-pix-ok
+    pagador: topico-pagador-envio-transacao-pix
+    retorno-pagador:
+      fail: topico-pagador-retorno-transacao-pix-falha
+      success: topico-pagador-retorno-transacao-pix-ok
+  fim:
+    transacao:
+      pix:
+        success: topico-fim-transacao-pix-ok
+        fail: topico-fim-transacao-pix-falha
+
 

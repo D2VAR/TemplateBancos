@@ -43,6 +43,14 @@ public class ChavePixService implements CadastroChavePixInput{
 
     }
 
+    public void validarExistenciaChaveDestinoPixBacen(TransacaoPixRequest transacaoPixRequest) {
+        var responseApiBacen = apiBacen.chavePixExists(transacaoPixRequest.getChaveDestino());
+        log.info("# Retorno API Bacen: {}", responseApiBacen);
+        if (!responseApiBacen.isChaveExists())
+            throw new ChavePixNotFoundException("Chave Pix não existe!");
+
+    }
+
     @Override
     public void cadastrarChaveInterna(ChavePixMensagem chavePix){
         validarExistenciaChavePixInterna(chavePix.getValorChave());
@@ -70,4 +78,15 @@ public class ChavePixService implements CadastroChavePixInput{
         chavePixRepository.save(chavePix);
         return new ChavePixResponse(chavePix);
     }
+
+    public void delete(UUID chavePixId) {
+        ChavePix chavePix = findById(chavePixId);
+        chavePixRepository.delete(chavePix);
+    }
+
+    private ChavePix findById(UUID chavePixId) {
+        return chavePixRepository.findById(chavePixId)
+                .orElseThrow(() -> new ChavePixNotFoundException("Chave Pix não encontrada!"));
+    }
+
 }

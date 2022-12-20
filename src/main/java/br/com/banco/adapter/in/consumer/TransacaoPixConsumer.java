@@ -18,8 +18,7 @@ import org.springframework.stereotype.Component;
 public class TransacaoPixConsumer {
 
     private final TransacaoPixInputPort inputPort;
-
-    //TODO: Trocartopicos
+    
     @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.retorno-pagador.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack) {
         try {

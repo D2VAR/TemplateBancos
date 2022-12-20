@@ -2,12 +2,14 @@ package br.com.banco.adapter.out.api.bacen.dto;
 
 import br.com.banco.domain.enums.TipoChave;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
-public class ApiBacenResponse{
+@Builder
+public class ApiBacenResponse {
     @JsonProperty("codigo_banco")
     private String codBanco;
     @JsonProperty("chave_existente")

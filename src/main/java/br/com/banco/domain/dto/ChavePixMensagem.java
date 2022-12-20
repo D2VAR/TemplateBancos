@@ -12,7 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ChavePixMensagem{
+@Builder
+public class ChavePixMensagem {
     @JsonProperty("transaction_id")
     private String transactionId;
     @JsonProperty("codigo_banco")
@@ -30,13 +31,13 @@ public class ChavePixMensagem{
     @JsonProperty("valor_chave")
     private String valorChave;
 
-    public ChavePixMensagem(ChavePix chavePix){
+    public ChavePixMensagem(ChavePix chavePix) {
         this(chavePix.getConta());
         this.valorChave = chavePix.getValor();
         this.tipoChave = chavePix.getTipo();
     }
 
-    private ChavePixMensagem(Conta conta){
+    private ChavePixMensagem(Conta conta) {
         this(conta.getUsuario());
         this.numeroConta = conta.getNumero();
         this.agenciaConta = conta.getAgencia();
@@ -44,7 +45,7 @@ public class ChavePixMensagem{
 
     }
 
-    private ChavePixMensagem(Usuario usuario){
+    private ChavePixMensagem(Usuario usuario) {
         this.cpfCnpj = usuario.getCpf();
         this.nome = usuario.getNome();
     }

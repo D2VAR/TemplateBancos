@@ -21,4 +21,10 @@ public class TransacaoPixController {
         transacaoPixService.enviaPix(transacaoPixRequest);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping
+    public ResponseEntity<Void> recebePix(@RequestBody TransacaoPixRequest transacaoPixRequest) {
+        transacaoPixService.enviaPix(transacaoPixRequest);
+        return ResponseEntity.noContent().build();
+    }
 }

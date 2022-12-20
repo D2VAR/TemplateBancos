@@ -59,7 +59,12 @@ topic:
       success: topico-retorno-cadastro-chave-pix-ok
     pagador: topico-pagador-envio-transacao-pix
     retorno-pagador:
-        fail: topico-pagador-retorno-transacao-pix-falha
-        success: topico-pagador-retorno-transacao-pix-ok
+      fail: topico-pagador-retorno-transacao-pix-falha
+      success: topico-pagador-retorno-transacao-pix-ok
+  fim:
+    transacao:
+      pix:
+        success: topico-fim-transacao-pix-ok
+        fail: topico-fim-transacao-pix-falha
 
 

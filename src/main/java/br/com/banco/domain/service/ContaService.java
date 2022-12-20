@@ -1,13 +1,15 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.adapter.out.db.repository.ContaRepository;
-import br.com.banco.domain.dto.ContaRequest;
-import br.com.banco.domain.dto.ContaResponse;
+import br.com.banco.domain.dto.conta.ContaRequest;
+import br.com.banco.domain.dto.conta.ContaResponse;
 import br.com.banco.domain.exceptions.ContaNotFoundException;
+import br.com.banco.domain.exceptions.SaldoInsuficienteException;
 import br.com.banco.domain.model.Conta;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -17,34 +19,24 @@ public class ContaService{
     private final UsuarioService usuarioService;
 
     public void deleteConta(UUID id){
-        getContaById(id);
+        getById(id);
         contaRepository.deleteById(id);
     }
 
-    public Conta getContaById(UUID id){
+    public ContaResponse getContaResponseById(UUID id){
+        var conta = getById(id);
+        return new ContaResponse(conta);
+    }
+
+    public Conta getById(UUID id){
         return contaRepository.findById(id)
-                .orElseThrow(() -> new ContaNotFoundException("Conta nao encontrada!"));
+                .orElseThrow(() -> new ContaNotFoundException("Conta não encontrada!"));
     }
-
-    public ContaResponse getDadosConta(UUID id){
-        var conta = getContaById(id);
-        return buildContaResponse(conta);
-    }
-
-    private ContaResponse buildContaResponse(Conta conta){
-        return ContaResponse.builder()
-                .id(conta.getId())
-                .agencia(conta.getAgencia())
-                .numero(conta.getNumero())
-                .idUsuario(conta.getUsuario().getId())
-                .build();
-    }
-
 
     public ContaResponse saveConta(ContaRequest request){
         var conta = gerarNovaConta(request);
         contaRepository.save(conta);
-        return buildContaResponse(conta);
+        return new ContaResponse(conta);
     }
 
     private Conta gerarNovaConta(ContaRequest request){
@@ -60,8 +52,33 @@ public class ContaService{
 
     }
 
-    public Conta getContaByAgenciaAndNumero(String agencia, String numero){
+    public Conta getByAgenciaAndNumero(String agencia, String numero){
         return contaRepository.findByAgenciaAndNumero(agencia, numero)
                 .orElseThrow(() -> new ContaNotFoundException("Conta nao encontrada!"));
     }
+
+
+    public void updateSaldo(UUID id, BigDecimal saldo){
+        var conta = getById(id);
+        conta.setSaldo(saldo);
+        contaRepository.save(conta);
+    }
+
+    public void debitarConta(UUID id, BigDecimal valor){
+        var conta = getById(id);
+        if (conta.getSaldo().compareTo(valor) >= 0){
+            BigDecimal saldo = conta.getSaldo().subtract(valor);
+            updateSaldo(id, saldo);
+        } else
+            throw new SaldoInsuficienteException("Saldo insuficiente!");
+
+    }
+
+    public void creditarConta(UUID id, BigDecimal valor){
+        Conta conta = getById(id);
+        BigDecimal saldo = conta.getSaldo().add(valor);
+        updateSaldo(id, saldo);
+    }
+
+
 }

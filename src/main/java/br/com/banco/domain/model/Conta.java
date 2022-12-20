@@ -35,6 +35,6 @@ public class Conta implements Serializable{
         this.agencia = agencia;
         this.numero = numero;
         this.usuario = usuario;
-        this.saldo = BigDecimal.ZERO;
+        this.saldo = BigDecimal.valueOf(1000);
     }
 }

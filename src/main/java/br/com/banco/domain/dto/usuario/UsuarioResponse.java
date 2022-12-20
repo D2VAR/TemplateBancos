@@ -1,10 +1,7 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.usuario;
 
 import br.com.banco.domain.model.Usuario;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -12,6 +9,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UsuarioResponse{
     private UUID id;
     private String cpf;

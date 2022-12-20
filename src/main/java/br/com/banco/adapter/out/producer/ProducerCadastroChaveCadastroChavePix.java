@@ -1,9 +1,9 @@
 package br.com.banco.adapter.out.producer;
 
 
-import br.com.banco.domain.dto.ChavePixMensagem;
+import br.com.banco.domain.dto.chavepix.ChavePixMensagem;
 import br.com.banco.domain.model.ChavePix;
-import br.com.banco.port.out.BacenProducerOutputPort;
+import br.com.banco.port.out.CadastroChavePixOutput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProducerCadastroChave implements BacenProducerOutputPort{
+public class ProducerCadastroChaveCadastroChavePix implements CadastroChavePixOutput{
     @Value("${topic.name.envio}")
     private String topico;
     private final KafkaTemplate<String, ChavePixMensagem> kafkaTemplate;

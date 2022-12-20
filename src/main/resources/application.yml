@@ -9,6 +9,22 @@ bacen:
     route: bacen:8080
 
 spring:
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+            required: 'true'
+          ssl:
+            enable: 'false'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: eaglegamesfs@gmail.com
+    password: qkjbmmzxlcdchjvw
+    test-connection: 'true'
+    port: '587'
+
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -32,8 +48,16 @@ spring:
               packages: '*'
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id:
-        success: itau-pix-consumer-success
-        failure: itau-pix-consumer-failure
+        chave:
+          success: itau-pix-key-success
+          failure: itau-pix-key-failure
+        envio-pix:
+          success: itau-pix-sender-success
+          failure: itau-pix-sender-failure
+        recebedor-pix:
+          success: itau-pix-receiver-success
+          failure: itau-pix-receiver-failure
+        recebedor-pix-validacao: itau-pix-receiver-validation
 
     listener:
       ack-mode: MANUAL
@@ -49,12 +73,26 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ''
     username: root
-    url: jdbc:mysql://mysql:3306/itau
+    url: jdbc:mysql://mysqlitau:3306/itau
 
 topic:
   name:
     envio: topico-envio-cadastro-chave-pix
     retorno:
-      fail: topico-retorno-cadastro-chave-pix-falha
-      success: topico-retorno-cadastro-chave-pix-ok
+      fail: topico-retorno-cadastro-chave-pix-falha-341
+      success: topico-retorno-cadastro-chave-pix-ok-341
+    pagador: topico-pagador-envio-transacao-pix
+    retorno-pagador:
+      fail: topico-pagador-retorno-transacao-pix-falha-341
+      success: topico-pagador-retorno-transacao-pix-ok-341
+    recebedor: topico-recebedor-envio-transacao-pix-341
+    envio-recebedor:
+      fail: topico-recebedor-retorno-transacao-pix-falha
+      success: topico-recebedor-retorno-transacao-pix-ok
+    fim:
+      transacao:
+        pix:
+          success: topico-fim-transacao-pix-ok-341
+          fail: topico-fim-transacao-pix-falha-341
+
 

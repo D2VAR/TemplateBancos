@@ -27,5 +27,7 @@ public class Usuario implements Serializable{
     private String telefone;
     @Column(name = "email", nullable = false)
     private String email;
+    @OneToOne
+    private Conta conta;
 
 }

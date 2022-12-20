@@ -1,7 +1,7 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.ContaRequest;
-import br.com.banco.domain.dto.ContaResponse;
+import br.com.banco.domain.dto.conta.ContaRequest;
+import br.com.banco.domain.dto.conta.ContaResponse;
 import br.com.banco.domain.service.ContaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class ContaController{
 
     @GetMapping("/{id}")
     public ResponseEntity<ContaResponse> getContaById(@PathVariable UUID id){
-        return ResponseEntity.ok(contaService.getDadosConta(id));
+        return ResponseEntity.ok(contaService.getContaResponseById(id));
     }
 
     @PostMapping

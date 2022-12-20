@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.chavepix;
 
 
 import br.com.banco.domain.enums.TipoChave;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChavePixRequest {
+public class ChavePixRequest{
     @JsonProperty("id_conta")
     private UUID idConta;
     @JsonProperty("tipo_chave")

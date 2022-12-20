@@ -1,5 +1,7 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.conta;
 
+import br.com.banco.domain.model.Conta;
+import br.com.banco.domain.model.Usuario;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -19,4 +21,16 @@ public class ContaResponse{
     private String numero;
     @JsonProperty("id_usuario")
     private UUID idUsuario;
+
+    public ContaResponse(Conta conta){
+        this(conta.getUsuario());
+        this.id = conta.getId();
+        this.agencia = conta.getAgencia();
+        this.numero = conta.getNumero();
+
+    }
+
+    private ContaResponse(Usuario usuario){
+        this.idUsuario = usuario.getId();
+    }
 }

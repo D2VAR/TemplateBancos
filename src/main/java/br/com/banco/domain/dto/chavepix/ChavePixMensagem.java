@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.chavepix;
 
 import br.com.banco.domain.enums.TipoChave;
 import br.com.banco.domain.model.ChavePix;

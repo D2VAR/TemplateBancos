@@ -1,14 +1,12 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.usuario;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UsuarioRequest{
     private String cpf;
     private String nome;

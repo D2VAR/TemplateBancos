@@ -26,13 +26,17 @@ public class ChavePix implements Serializable{
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo", updatable = false, nullable = false)
     private TipoChave tipo;
-    @ManyToOne
+    @JoinColumn(name = "conta_id", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = Conta.class, fetch = FetchType.LAZY)
     private Conta conta;
 
-    public ChavePix(String valor, TipoChave tipo, Conta conta){
+    @Column(name = "conta_id")
+    private UUID contaId;
+
+    public ChavePix(String valor, TipoChave tipo, UUID contaId){
         this.valor = valor;
         this.tipo = tipo;
-        this.conta = conta;
+        this.contaId = contaId;
     }
 }
 

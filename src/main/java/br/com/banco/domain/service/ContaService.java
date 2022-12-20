@@ -21,13 +21,9 @@ public class ContaService{
         contaRepository.deleteById(id);
     }
 
-    public Conta getContaById(UUID id){
-        return contaRepository.findById(id)
-                .orElseThrow(() -> new ContaNotFoundException("Conta nao encontrada!"));
-    }
-
-    public ContaResponse getDadosConta(UUID id){
-        var conta = getContaById(id);
+    public ContaResponse getContaById(UUID id){
+        var conta = contaRepository.findById(id)
+                .orElseThrow(() -> new ContaNotFoundException("Conta não encontrada!"));
         return buildContaResponse(conta);
     }
 
@@ -60,8 +56,9 @@ public class ContaService{
 
     }
 
-    public Conta getContaByAgenciaAndNumero(String agencia, String numero){
-        return contaRepository.findByAgenciaAndNumero(agencia, numero)
+    public ContaResponse getContaByAgenciaAndNumero(String agencia, String numero){
+        var conta = contaRepository.findByAgenciaAndNumero(agencia, numero)
                 .orElseThrow(() -> new ContaNotFoundException("Conta nao encontrada!"));
+        return buildContaResponse(conta);
     }
 }

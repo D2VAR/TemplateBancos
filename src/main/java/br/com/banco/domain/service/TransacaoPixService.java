@@ -1,7 +1,6 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.domain.dto.conta.ContaResponse;
-import br.com.banco.domain.dto.transacaopix.RecebedorPixMensagem;
 import br.com.banco.domain.dto.transacaopix.RetornoTransacaoPixMensagem;
 import br.com.banco.domain.dto.transacaopix.TransacaoPixMensagem;
 import br.com.banco.domain.dto.transacaopix.TransacaoPixRequest;
@@ -67,11 +66,11 @@ public class TransacaoPixService implements PixSender, PixReceiver{
     }
 
     @Override
-    public void verificarRecebimentoPix(RecebedorPixMensagem recebedorPixMensagem){
+    public void consolidarRecebimentoPix(RetornoTransacaoPixMensagem recebedorPixMensagem){
         try{
             if (recebedorPixMensagem.isPixRealizado()){
                 var conta = getContaFromChavePix(recebedorPixMensagem.getChaveDestino());
-                contaService.creditarConta(conta.getId(), recebedorPixMensagem.getValorTransferencia());
+                contaService.creditarConta(conta.getId(), recebedorPixMensagem.getValor());
             }
         } catch (Exception e){
             log.error("### Erro ao consolidar pix! - Transaction id {}, Chave Pix: {}",

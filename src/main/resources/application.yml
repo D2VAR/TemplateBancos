@@ -48,8 +48,16 @@ spring:
               packages: '*'
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id:
-        success: itau-pix-consumer-success
-        failure: itau-pix-consumer-failure
+        chave:
+          success: itau-pix-key-success
+          failure: itau-pix-key-failure
+        envio-pix:
+          success: itau-pix-sender-success
+          failure: itau-pix-sender-failure
+        recebedor-pix:
+          success: itau-pix-receiver-success
+          failure: itau-pix-receiver-failure
+        recebedor-pix-validacao: itau-pix-receiver-validation
 
     listener:
       ack-mode: MANUAL
@@ -77,10 +85,14 @@ topic:
     retorno-pagador:
       fail: topico-pagador-retorno-transacao-pix-falha
       success: topico-pagador-retorno-transacao-pix-ok
-  fim:
-    transacao:
-      pix:
-        success: topico-fim-transacao-pix-ok
-        fail: topico-fim-transacao-pix-falha
+    recebedor: topico-recebedor-envio-transacao-pix
+    envio-recebedor:
+      fail: topico-recebedor-retorno-transacao-pix-falha
+      success: topico-recebedor-retorno-transacao-pix-ok
+    fim:
+      transacao:
+        pix:
+          success: topico-fim-transacao-pix-ok
+          fail: topico-fim-transacao-pix-falha
 
 

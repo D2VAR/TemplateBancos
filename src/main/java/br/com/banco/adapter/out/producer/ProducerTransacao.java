@@ -19,8 +19,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProducerTransacao implements TransacaoBacenProducerOutputPort{
     @Value("${topic.name.pagador}")
-    private String topico;
-    private final KafkaTemplate<String, TransacaoPixMensagem> kafkaTemplate;
+    private String topicoEnvioPix;
+    @Value("${topic.name.envio-recebedor.success}")
+    private String topicoEnvioValidacaoSucesso;
+    @Value("${topic.name.envio-recebedor.failure}")
+    private String topicoEnvioValidacaoFalha;
+    private final KafkaTemplate<String, TransacaoPixMensagem> kafkaTemplateEnvioPix;
+    private final KafkaTemplate<String, RetornoTransacaoPixMensagem> kafkaTemplateEnvioRecebedor;
 
 
     @Override
@@ -30,30 +35,35 @@ public class ProducerTransacao implements TransacaoBacenProducerOutputPort{
 
     }
 
-    @Override
-    public void enviarMensagemErroValidacaoPix(RetornoTransacaoPixMensagem mensagem){
-
-    }
-
-    @Override
-    public void enviarMensagemSucessoValidacaoPix(RetornoTransacaoPixMensagem mensagem){
-
-    }
-
-    private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem){
-        kafkaTemplate.send(topico, mensagem);
-        log.info("## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
-                mensagem.getTransactionId(), mensagem.getChaveDestino());
-        kafkaTemplate.flush();
-    }
-
     private TransacaoPixMensagem buildTransacaoPixMensagem(TransacaoPix transacaoPix){
         var mensagem = new TransacaoPixMensagem(transacaoPix);
         mensagem.setTransactionId(UUID.randomUUID().toString());
         return mensagem;
     }
 
+    private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem){
+        kafkaTemplateEnvioPix.send(topicoEnvioPix, mensagem);
+        log.info("## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
+                mensagem.getTransactionId(), mensagem.getChaveDestino());
+        kafkaTemplateEnvioPix.flush();
+    }
 
+    @Override
+    public void enviarMensagemErroValidacaoPix(RetornoTransacaoPixMensagem mensagem){
+        sendRetornoTransacaoPixMensagemToKafka(topicoEnvioValidacaoSucesso, mensagem);
+    }
+
+    private void sendRetornoTransacaoPixMensagemToKafka(String topico, RetornoTransacaoPixMensagem mensagem){
+        kafkaTemplateEnvioRecebedor.send(topico, mensagem);
+        log.info("## Mensagem de validacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
+                mensagem.getTransactionId(), mensagem.getChaveDestino());
+        kafkaTemplateEnvioPix.flush();
+    }
+
+    @Override
+    public void enviarMensagemSucessoValidacaoPix(RetornoTransacaoPixMensagem mensagem){
+        sendRetornoTransacaoPixMensagemToKafka(topicoEnvioValidacaoFalha, mensagem);
+    }
 }
 
 

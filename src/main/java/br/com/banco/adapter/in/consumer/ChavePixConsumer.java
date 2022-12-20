@@ -19,7 +19,7 @@ public class ChavePixConsumer{
     private final CadastroChavePixInput cadastroChave;
     private final NotificationInputPort notificacoes;
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.name.retorno.success}")
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.chave.success}", topics = "${topic.name.retorno.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
             consumirChavePixMensagemSucesso(mensagemKafka);
@@ -43,7 +43,7 @@ public class ChavePixConsumer{
         return new ObjectMapper().readValue(mensagemKafka.value(), ChavePixMensagem.class);
     }
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id.failure}", topics = "${topic.name.retorno.fail}")
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.chave.failure}", topics = "${topic.name.retorno.fail}")
     public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
             consumirChavePixMensagemFalha(mensagemKafka);

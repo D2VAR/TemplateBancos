@@ -21,7 +21,7 @@ public class TransacaoPixConsumer{
     private final NotificationInputPort notification;
 
     //TODO: Trocartopicos
-    @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.retorno-pagador.success}")
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.envio-pix.success}", topics = "${topic.retorno-pagador.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
             var mensagem = parseStringToRetornoTransacaoPixMensagem(mensagemKafka);
@@ -37,7 +37,7 @@ public class TransacaoPixConsumer{
         }
     }
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id.failure}", topics = "${topic.retorno-pagador.fail}")
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.envio-pix.failure}", topics = "${topic.retorno-pagador.fail}")
     public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
             var mensagem = parseStringToRetornoTransacaoPixMensagem(mensagemKafka);

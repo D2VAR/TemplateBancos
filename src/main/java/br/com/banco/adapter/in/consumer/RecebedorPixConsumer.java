@@ -1,6 +1,7 @@
 package br.com.banco.adapter.in.consumer;
 
-import br.com.banco.domain.dto.transacaopix.RecebedorPixMensagem;
+import br.com.banco.domain.dto.transacaopix.RetornoTransacaoPixMensagem;
+import br.com.banco.port.in.NotificationInputPort;
 import br.com.banco.port.in.PixReceiver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,12 +17,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RecebedorPixConsumer{
     private final PixReceiver inputPort;
+    private final NotificationInputPort notification;
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.fim.transacao.pix.success}")
+
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.recebedor-pix.success}", topics = "${topic.name.fim.transacao.pix.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
-            var recebedorPixMensagem = processConsumerRecord(mensagemKafka);
-            inputPort.verificarRecebimentoPix(recebedorPixMensagem);
+            var mensagem = processConsumerRecord(mensagemKafka);
+            inputPort.consolidarRecebimentoPix(mensagem);
+            notification.sendSuccessTransacaoPixEmail(mensagem);
 
         } catch (Exception ex){
             log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
@@ -31,11 +35,12 @@ public class RecebedorPixConsumer{
         }
     }
 
-    @KafkaListener(id = "${spring.kafka.consumer.group-id.failure}", topics = "${topic.fim.transacao.pix.fail}")
+    @KafkaListener(id = "${spring.kafka.consumer.group-id.recebedor-pix.failure}", topics = "${topic.name.fim.transacao.pix.fail}")
     public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
-            var recebedorPixMessagem = processConsumerRecord(mensagemKafka);
-            inputPort.verificarRecebimentoPix(recebedorPixMessagem);
+            var mensagem = processConsumerRecord(mensagemKafka);
+            inputPort.consolidarRecebimentoPix(mensagem);
+            notification.sendFailureTransacaoPixEmail(mensagem);
         } catch (Exception ex){
             log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
         } finally{
@@ -43,9 +48,9 @@ public class RecebedorPixConsumer{
         }
     }
 
-    private RecebedorPixMensagem processConsumerRecord(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
+    private RetornoTransacaoPixMensagem processConsumerRecord(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
         log.info(String.format("#### Mensagem Consumida -> %s, topic -> %s",
                 mensagemKafka.value(), mensagemKafka.topic()));
-        return new ObjectMapper().readValue(mensagemKafka.value(), RecebedorPixMensagem.class);
+        return new ObjectMapper().readValue(mensagemKafka.value(), RetornoTransacaoPixMensagem.class);
     }
 }

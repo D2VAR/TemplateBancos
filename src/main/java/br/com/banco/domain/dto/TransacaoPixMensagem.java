@@ -17,40 +17,33 @@ import java.math.BigDecimal;
 public class TransacaoPixMensagem {
     @JsonProperty("transaction_id")
     private String transactionId;
-    @JsonProperty("codigo_banco")
-    private String codBanco;
-    @JsonProperty("numero_conta")
-    private String numeroConta;
-    @JsonProperty("agencia_conta")
-    private String agenciaConta;
+    @JsonProperty("codigo_banco_origem")
+    private String codBancoOrigem;
     @JsonProperty("cpf_cnpj")
     private String cpfCnpj;
     @JsonProperty("nome")
     private String nome;
+
     @JsonProperty("tipo_chave")
     private TipoChave tipoChave;
-    @JsonProperty("valor_chave")
-    private String valorChave;
-
+    @JsonProperty("chave_destino")
+    private String chaveDestino;
     @JsonProperty("valor")
     private BigDecimal valor;
 
 
-
-    public TransacaoPixMensagem(TransacaoPix transacaoPix){
-        this.valorChave = getValorChave();
-        this.valor=getValor();
+    public TransacaoPixMensagem(TransacaoPix transacaoPix) {
+        this.chaveDestino = getChaveDestino();
+        this.valor = getValor();
     }
 
-    private TransacaoPixMensagem(Conta conta){
+    private TransacaoPixMensagem(Conta conta) {
         this(conta.getUsuario());
-        this.numeroConta = conta.getNumero();
-        this.agenciaConta = conta.getAgencia();
-        this.codBanco = conta.getBanco();
+        this.codBancoOrigem = conta.getBanco();
 
     }
 
-    private TransacaoPixMensagem(Usuario usuario){
+    private TransacaoPixMensagem(Usuario usuario) {
         this.cpfCnpj = usuario.getCpf();
         this.nome = usuario.getNome();
     }

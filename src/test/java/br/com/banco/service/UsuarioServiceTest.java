@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UsuarioServiceTest{
+class UsuarioServiceTest {
 
     @Mock
     private UsuarioRepository repository;
     @InjectMocks
     private UsuarioService service;
 
-    private Usuario buildUsuario(){
+    private Usuario buildUsuario() {
         return Usuario.builder()
                 .id(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"))
                 .nome("Joao")
@@ -35,14 +35,14 @@ class UsuarioServiceTest{
                 .build();
     }
 
-    private UsuarioRequest buildUsuarioRequest(){
+    private UsuarioRequest buildUsuarioRequest() {
         return UsuarioRequest.builder()
                 .nome("Joao")
                 .cpf("123456789")
                 .build();
     }
 
-    private Usuario buildUsuarioResponse(){
+    private Usuario buildUsuarioResponse() {
         return Usuario.builder()
                 .id(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"))
                 .nome("Joao")
@@ -52,7 +52,7 @@ class UsuarioServiceTest{
 
 
     @Test
-    void getUsuarioByIdTest(){
+    void getUsuarioByIdTest() {
         when(repository.findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e")))
                 .thenReturn(Optional.of((buildUsuario())));
         Usuario result = service.getUsuariobyId(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"));
@@ -64,7 +64,7 @@ class UsuarioServiceTest{
     }
 
     @Test
-    void getUsuarioByIdExcepitionTest(){
+    void getUsuarioByIdExcepitionTest() {
         when(repository.findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e")))
                 .thenReturn(Optional.empty());
         UsuarioNotFoundException ex = Assertions.assertThrows(UsuarioNotFoundException.class, () ->
@@ -74,7 +74,43 @@ class UsuarioServiceTest{
     }
 
     @Test
-    void deleteUsuarioByIdTest(){
+    void getUsuarioResponseByIdTest() {
+        when(repository.findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e")))
+                .thenReturn(Optional.of((buildUsuario())));
+        UsuarioResponse result = service.getUsuario(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"));
+
+        verify(repository, times(1))
+                .findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"));
+        assertEquals(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"), result.getId());
+
+    }
+
+    @Test
+    void getUsuarioResponseByCpfTest() {
+        when(repository.findByCpf("123456789"))
+                .thenReturn(Optional.of((buildUsuario())));
+        Usuario result = service.getUsuarioByCpf("123456789");
+
+        verify(repository, times(1))
+                .findByCpf("123456789");
+        assertEquals("123456789", result.getCpf());
+
+    }
+
+
+    @Test
+    void getUsuarioResponseByCpfExcepitionTest() {
+        when(repository.findByCpf("123456789"))
+                .thenReturn(Optional.empty());
+        UsuarioNotFoundException ex = Assertions.assertThrows(UsuarioNotFoundException.class, () ->
+                service.getUsuarioByCpf("123456789")
+        );
+        assertEquals("Usuario nao encontrado!", ex.getMessage());
+    }
+
+
+    @Test
+    void deleteUsuarioByIdTest() {
         when(repository.findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e")))
                 .thenReturn(Optional.of((buildUsuario())));
         service.deletePorId(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"));
@@ -83,7 +119,7 @@ class UsuarioServiceTest{
     }
 
     @Test
-    void saveUsuarioTest(){
+    void saveUsuarioTest() {
         when(repository.save(any(Usuario.class))).thenReturn(buildUsuarioResponse());
         UsuarioResponse result = service.saveUsuario(buildUsuarioRequest());
         verify(repository, times(1)).save(any(Usuario.class));
@@ -91,7 +127,7 @@ class UsuarioServiceTest{
     }
 
     @Test
-    void updateUsuarioTest(){
+    void updateUsuarioTest() {
         when(repository.findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e")))
                 .thenReturn(Optional.of((buildUsuario())));
         when(repository.save(any(Usuario.class))).thenReturn(buildUsuarioResponse());
@@ -101,7 +137,7 @@ class UsuarioServiceTest{
     }
 
     @Test
-    void getUsiarioTest(){
+    void getUsiarioTest() {
         when(repository.findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"))).thenReturn(Optional.of(buildUsuario()));
         Usuario result = service.getUsuariobyId(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"));
         verify(repository, times(1)).findById(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"));

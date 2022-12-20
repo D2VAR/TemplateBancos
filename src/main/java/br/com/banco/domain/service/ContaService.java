@@ -69,7 +69,6 @@ public class ContaService{
         if (conta.getSaldo().compareTo(valor) >= 0){
             BigDecimal saldo = conta.getSaldo().subtract(valor);
             updateSaldo(id, saldo);
-
         } else
             throw new SaldoInsuficienteException("Saldo insuficiente!");
 

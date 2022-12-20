@@ -73,26 +73,26 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ''
     username: root
-    url: jdbc:mysql://localhost:3306/itau
+    url: jdbc:mysql://mysqlitau:3306/itau
 
 topic:
   name:
     envio: topico-envio-cadastro-chave-pix
     retorno:
-      fail: topico-retorno-cadastro-chave-pix-falha
-      success: topico-retorno-cadastro-chave-pix-ok
+      fail: topico-retorno-cadastro-chave-pix-falha-341
+      success: topico-retorno-cadastro-chave-pix-ok-341
     pagador: topico-pagador-envio-transacao-pix
     retorno-pagador:
-      fail: topico-pagador-retorno-transacao-pix-falha
-      success: topico-pagador-retorno-transacao-pix-ok
-    recebedor: topico-recebedor-envio-transacao-pix
+      fail: topico-pagador-retorno-transacao-pix-falha-341
+      success: topico-pagador-retorno-transacao-pix-ok-341
+    recebedor: topico-recebedor-envio-transacao-pix-341
     envio-recebedor:
       fail: topico-recebedor-retorno-transacao-pix-falha
       success: topico-recebedor-retorno-transacao-pix-ok
     fim:
       transacao:
         pix:
-          success: topico-fim-transacao-pix-ok
-          fail: topico-fim-transacao-pix-falha
+          success: topico-fim-transacao-pix-ok-341
+          fail: topico-fim-transacao-pix-falha-341
 
 

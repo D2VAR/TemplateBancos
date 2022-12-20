@@ -11,4 +11,7 @@ public interface NotificationInputPort{
     void sendSuccessTransacaoPixEmail(RetornoTransacaoPixMensagem mensagem);
 
     void sendFailureTransacaoPixEmail(RetornoTransacaoPixMensagem mensagem);
+
+    void sendSuccessReceivePixEmail(RetornoTransacaoPixMensagem mensagem);
 }
+

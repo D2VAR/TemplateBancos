@@ -5,7 +5,6 @@ import br.com.banco.adapter.out.db.repository.ChavePixRepository;
 import br.com.banco.domain.dto.chavepix.ChavePixMensagem;
 import br.com.banco.domain.dto.chavepix.ChavePixRequest;
 import br.com.banco.domain.dto.chavepix.ChavePixResponse;
-import br.com.banco.domain.dto.transacaopix.TransacaoPixRequest;
 import br.com.banco.domain.exceptions.ChavePixAlreadyExistException;
 import br.com.banco.domain.exceptions.ChavePixNotFoundException;
 import br.com.banco.domain.model.ChavePix;
@@ -29,7 +28,7 @@ public class ChavePixService implements CadastroChavePixInput{
     @Override
     public void cadastrarChaveBacen(ChavePixRequest chavePixRequest){
         var entity = chavePixRequestToModel(chavePixRequest);
-        validarExistenciaChavePixBacen(chavePixRequest);
+        validarNaoExistenciaChavePixBacen(chavePixRequest.getValorChave());
         cadastroChavePixOutput.enviarMensagemCadastroChave(entity);
     }
 
@@ -38,21 +37,20 @@ public class ChavePixService implements CadastroChavePixInput{
         return new ChavePix(chavePixRequest.getValorChave(), chavePixRequest.getTipoChave(), conta);
     }
 
-    private void validarExistenciaChavePixBacen(ChavePixRequest chavePixRequest){
-        var responseApiBacen = apiBacen.chavePixExists(chavePixRequest.getValorChave());
-        log.info("# Retorno API Bacen: {}", responseApiBacen);
+    public void validarNaoExistenciaChavePixBacen(String valorChave){
+        var responseApiBacen = apiBacen.chavePixExists(valorChave);
         if (responseApiBacen.isChaveExists())
-            throw new ChavePixAlreadyExistException("Chave Pix ja existente!");
+            throw new ChavePixAlreadyExistException("Chave Pix já existente!");
 
     }
 
-    public void validarExistenciaChaveDestinoPixBacen(TransacaoPixRequest transacaoPixRequest){
-        var responseApiBacen = apiBacen.chavePixExists(transacaoPixRequest.getChaveDestino());
-        log.info("# Retorno API Bacen: {}", responseApiBacen);
+    public void validarExistenciaChavePixBacen(String valorChave){
+        var responseApiBacen = apiBacen.chavePixExists(valorChave);
         if (!responseApiBacen.isChaveExists())
-            throw new ChavePixNotFoundException("Chave Pix não existe!");
+            throw new ChavePixNotFoundException("Chave Pix não encontrada!");
 
     }
+
 
     @Override
     public void cadastrarChaveInterna(ChavePixMensagem chavePix){

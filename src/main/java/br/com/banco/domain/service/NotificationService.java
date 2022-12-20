@@ -122,7 +122,7 @@ public class NotificationService implements NotificationInputPort{
                         <h2><code>Maravilha %s!</code></h2>
                                                 
                         <pre>
-                        <code>Seu PIX para a chave: <strong>%s</strong> de valor <strong>%s</strong>, foi enviado!
+                        <code>Seu PIX para a chave: <strong>%s</strong> de valor <strong>R$%s</strong>, foi enviado!
                         <code>
                                                 
                         Atenciosamente,
@@ -164,5 +164,36 @@ public class NotificationService implements NotificationInputPort{
                 mensagem.getNome(),
                 mensagem.getChaveDestino(),
                 mensagem.getValor());
+    }
+
+    @Override
+    public void sendSuccessReceivePixEmail(RetornoTransacaoPixMensagem mensagem){
+        var email = buildPixReceivedEmailRequest(mensagem);
+        outputPort.sendEmail(email);
+    }
+
+    private EmailRequest buildPixReceivedEmailRequest(RetornoTransacaoPixMensagem mensagem){
+        var email = buildTransferBaseEmailRequest(mensagem);
+        setEmailSubject(email, "Pix recebido!");
+        setEmailContent(email, generatePixReceivedMessage(mensagem));
+        return email;
+    }
+
+    private String generatePixReceivedMessage(RetornoTransacaoPixMensagem mensagem){
+        return String.format("""
+                        <h2><code>Que beleza hein %s!</code></h2>
+                                                
+                        <pre>
+                        <code>Voc&ecirc; acabou de receber um pix de: <strong>R$%s</strong> do banco <strong>%s</strong>!
+                        <code>
+                        V&ecirc; se aproveita essa grana em!
+                                               
+                        Atenciosamente,
+                        equipe Ita&uacute; Unibanco.</code>
+                        </pre>
+                        """,
+                mensagem.getNome(),
+                mensagem.getValor(),
+                mensagem.getCodBancoOrigem());
     }
 }

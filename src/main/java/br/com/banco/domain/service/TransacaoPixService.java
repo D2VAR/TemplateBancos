@@ -25,9 +25,9 @@ public class TransacaoPixService implements PixSender, PixReceiver{
     @Override
     public void enviarPix(TransacaoPixRequest request){
         var transacaoPix = transacaoPixRequestToModel(request);
-        chavePixService.validarExistenciaChaveDestinoPixBacen(request);
-        transacaoBacenProducerOutputPort.enviarMensagemTransacaoPix(transacaoPix);
+        chavePixService.validarExistenciaChavePixBacen(request.getChaveDestino());
         contaService.debitarConta(request.getIdConta(), request.getValor());
+        transacaoBacenProducerOutputPort.enviarMensagemTransacaoPix(transacaoPix);
 
     }
 

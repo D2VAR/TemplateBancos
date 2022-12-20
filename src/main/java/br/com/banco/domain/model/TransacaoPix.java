@@ -1,13 +1,13 @@
 package br.com.banco.domain.model;
 
 import br.com.banco.domain.enums.TipoChave;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
 public class TransacaoPix{

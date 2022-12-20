@@ -24,7 +24,7 @@ public class ChavePixConsumer{
         try{
             consumirChavePixMensagemSucesso(mensagemKafka);
         } catch (JsonProcessingException ex){
-            log.error("### Erro ao processar mensagem de sucesso! -> {}, erro -> {}",
+            log.error("### Retorno Cadastro Chave Pix ### Erro ao processar mensagem de sucesso! -> {}, erro -> {}",
                     mensagemKafka.value(), ex.getMessage());
         } finally{
             ack.acknowledge();
@@ -34,8 +34,8 @@ public class ChavePixConsumer{
     private void consumirChavePixMensagemSucesso(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
         var mensagem = parseStringToChavePixMensagem(mensagemKafka);
         cadastroChave.cadastrarChaveInterna(mensagem);
-        log.info("### Mensagem de sucesso consumida! -> Transaction Id: {}, Chave Pix: {}",
-                mensagem.getTransactionId(), mensagem.getValorChave());
+        log.info("### Retorno Cadastro Chave Pix ### Mensagem de sucesso consumida! -> Transaction Id: {}, topic: {}",
+                mensagem.getTransactionId(), mensagemKafka.topic());
         notificacoes.sendSuccessChavePixCadastradaEmail(mensagem);
     }
 
@@ -48,7 +48,7 @@ public class ChavePixConsumer{
         try{
             consumirChavePixMensagemFalha(mensagemKafka);
         } catch (JsonProcessingException ex){
-            log.error("### Erro ao processar mensagem de falha! -> {}, erro -> {}",
+            log.error("### Retorno Cadastro Chave Pix ### Erro ao processar mensagem de falha! -> {}, erro -> {}",
                     mensagemKafka.key(), ex.getMessage());
         } finally{
             ack.acknowledge();
@@ -57,8 +57,8 @@ public class ChavePixConsumer{
 
     private void consumirChavePixMensagemFalha(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
         var mensagem = parseStringToChavePixMensagem(mensagemKafka);
-        log.info("### Mensagem de falha consumida! -> Transaction Id: {}, Chave Pix: {}",
-                mensagem.getTransactionId(), mensagem.getValorChave());
+        log.info("### Retorno Cadastro Chave Pix ### Mensagem de falha consumida! -> Transaction Id: {}, topico: {}",
+                mensagem.getTransactionId(), mensagemKafka.topic());
         notificacoes.sendFailureChavePixCadastradaEmail(mensagem);
     }
 

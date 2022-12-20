@@ -24,7 +24,7 @@ public class ValidacaoRecebedorPixConsumer{
             inputPort.validarTransacao(recebedorPixMensagem);
 
         } catch (Exception ex){
-            log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
+            log.error("#### Recebedor Validacao de Pix #### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
 
         } finally{
             ack.acknowledge();
@@ -32,7 +32,7 @@ public class ValidacaoRecebedorPixConsumer{
     }
 
     private TransacaoPixMensagem processConsumerRecord(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
-        log.info(String.format("#### Mensagem Consumida -> %s, topic -> %s",
+        log.info(String.format("#### Recebedor Validacao de Pix #### Mensagem Consumida -> %s, topic -> %s",
                 mensagemKafka.value(), mensagemKafka.topic()));
         return new ObjectMapper().readValue(mensagemKafka.value(), TransacaoPixMensagem.class);
     }

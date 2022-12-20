@@ -22,7 +22,7 @@ public class ProducerTransacao implements TransacaoBacenProducerOutputPort{
     private String topicoEnvioPix;
     @Value("${topic.name.envio-recebedor.success}")
     private String topicoEnvioValidacaoSucesso;
-    @Value("${topic.name.envio-recebedor.failure}")
+    @Value("${topic.name.envio-recebedor.fail}")
     private String topicoEnvioValidacaoFalha;
     private final KafkaTemplate<String, TransacaoPixMensagem> kafkaTemplateEnvioPix;
     private final KafkaTemplate<String, RetornoTransacaoPixMensagem> kafkaTemplateEnvioRecebedor;
@@ -43,7 +43,7 @@ public class ProducerTransacao implements TransacaoBacenProducerOutputPort{
 
     private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem){
         kafkaTemplateEnvioPix.send(topicoEnvioPix, mensagem);
-        log.info("## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
+        log.info("## Envio Pix ## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
                 mensagem.getTransactionId(), mensagem.getChaveDestino());
         kafkaTemplateEnvioPix.flush();
     }
@@ -55,9 +55,9 @@ public class ProducerTransacao implements TransacaoBacenProducerOutputPort{
 
     private void sendRetornoTransacaoPixMensagemToKafka(String topico, RetornoTransacaoPixMensagem mensagem){
         kafkaTemplateEnvioRecebedor.send(topico, mensagem);
-        log.info("## Mensagem de validacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
-                mensagem.getTransactionId(), mensagem.getChaveDestino());
-        kafkaTemplateEnvioPix.flush();
+        log.info("## Retorno Validacao Recebedor ## Mensagem de validacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}, Sucesso: {}",
+                mensagem.getTransactionId(), mensagem.getChaveDestino(), mensagem.isPixRealizado());
+        kafkaTemplateEnvioRecebedor.flush();
     }
 
     @Override

@@ -25,10 +25,10 @@ public class RecebedorPixConsumer{
         try{
             var mensagem = processConsumerRecord(mensagemKafka);
             inputPort.consolidarRecebimentoPix(mensagem);
-            notification.sendSuccessTransacaoPixEmail(mensagem);
+            notification.sendSuccessReceivePixEmail(mensagem);
 
         } catch (Exception ex){
-            log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
+            log.error("#### Recebedor Fim Pix #### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
 
         } finally{
             ack.acknowledge();
@@ -42,14 +42,14 @@ public class RecebedorPixConsumer{
             inputPort.consolidarRecebimentoPix(mensagem);
             notification.sendFailureTransacaoPixEmail(mensagem);
         } catch (Exception ex){
-            log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
+            log.error("#### Recebedor Fim Pix #### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
         } finally{
             ack.acknowledge();
         }
     }
 
     private RetornoTransacaoPixMensagem processConsumerRecord(ConsumerRecord<String, String> mensagemKafka) throws JsonProcessingException{
-        log.info(String.format("#### Mensagem Consumida -> %s, topic -> %s",
+        log.info(String.format("#### Recebedor Fim Pix #### Mensagem Consumida -> %s, topic -> %s",
                 mensagemKafka.value(), mensagemKafka.topic()));
         return new ObjectMapper().readValue(mensagemKafka.value(), RetornoTransacaoPixMensagem.class);
     }

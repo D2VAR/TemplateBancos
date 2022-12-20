@@ -1,7 +1,7 @@
 package br.com.banco.adapter.in.consumer;
 
 import br.com.banco.domain.dto.ChavePixMensagem;
-import br.com.banco.port.in.CadastroChavePixInputPort;
+import br.com.banco.port.in.CadastroChavePixInput;
 import br.com.banco.port.in.NotificationInputPort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ChavePixConsumer{
-    private final CadastroChavePixInputPort cadastroChave;
+    private final CadastroChavePixInput cadastroChave;
     private final NotificationInputPort notificacoes;
 
     @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.name.retorno.success}")

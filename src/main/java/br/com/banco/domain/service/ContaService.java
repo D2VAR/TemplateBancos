@@ -17,30 +17,24 @@ public class ContaService{
     private final UsuarioService usuarioService;
 
     public void deleteConta(UUID id){
-        getContaById(id);
+        getById(id);
         contaRepository.deleteById(id);
     }
 
-    public ContaResponse getContaById(UUID id){
-        var conta = contaRepository.findById(id)
+    public ContaResponse getContaResponseById(UUID id){
+        var conta = getById(id);
+        return new ContaResponse(conta);
+    }
+
+    public Conta getById(UUID id){
+        return contaRepository.findById(id)
                 .orElseThrow(() -> new ContaNotFoundException("Conta não encontrada!"));
-        return buildContaResponse(conta);
     }
-
-    private ContaResponse buildContaResponse(Conta conta){
-        return ContaResponse.builder()
-                .id(conta.getId())
-                .agencia(conta.getAgencia())
-                .numero(conta.getNumero())
-                .idUsuario(conta.getUsuario().getId())
-                .build();
-    }
-
 
     public ContaResponse saveConta(ContaRequest request){
         var conta = gerarNovaConta(request);
         contaRepository.save(conta);
-        return buildContaResponse(conta);
+        return new ContaResponse(conta);
     }
 
     private Conta gerarNovaConta(ContaRequest request){
@@ -56,9 +50,8 @@ public class ContaService{
 
     }
 
-    public ContaResponse getContaByAgenciaAndNumero(String agencia, String numero){
-        var conta = contaRepository.findByAgenciaAndNumero(agencia, numero)
+    public Conta getByAgenciaAndNumero(String agencia, String numero){
+        return contaRepository.findByAgenciaAndNumero(agencia, numero)
                 .orElseThrow(() -> new ContaNotFoundException("Conta nao encontrada!"));
-        return buildContaResponse(conta);
     }
 }

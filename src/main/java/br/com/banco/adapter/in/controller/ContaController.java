@@ -18,7 +18,7 @@ public class ContaController{
 
     @GetMapping("/{id}")
     public ResponseEntity<ContaResponse> getContaById(@PathVariable UUID id){
-        return ResponseEntity.ok(contaService.getDadosConta(id));
+        return ResponseEntity.ok(contaService.getContaResponseById(id));
     }
 
     @PostMapping

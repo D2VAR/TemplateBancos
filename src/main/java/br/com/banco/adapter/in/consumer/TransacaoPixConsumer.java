@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TransacaoPixConsumer {
-
+public class TransacaoPixConsumer{
     private final TransacaoPixInputPort inputPort;
 
     //TODO: Trocartopicos

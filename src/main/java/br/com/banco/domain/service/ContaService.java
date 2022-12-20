@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ContaService implements RecebedorPixInputPort {
+public class ContaService implements RecebedorPixInputPort{
     private final ContaRepository contaRepository;
     private final UsuarioService usuarioService;
 
@@ -60,15 +60,15 @@ public class ContaService implements RecebedorPixInputPort {
     }
 
 
-    public void updateSaldo(UUID id, BigDecimal saldo) {
-        var conta = getContaById(id);
+    public void updateSaldo(UUID id, BigDecimal saldo){
+        var conta = getById(id);
         conta.setSaldo(saldo);
         contaRepository.save(conta);
     }
 
-    public void debitarConta(UUID id, BigDecimal valor) {
-        Conta conta = getContaById(id);
-        if (conta.getSaldo().compareTo(valor) >= 0) {
+    public void debitarConta(UUID id, BigDecimal valor){
+        var conta = getById(id);
+        if (conta.getSaldo().compareTo(valor) >= 0){
             BigDecimal saldo = conta.getSaldo().subtract(valor);
             updateSaldo(id, saldo);
 
@@ -78,19 +78,18 @@ public class ContaService implements RecebedorPixInputPort {
 
     }
 
-    public void creditarConta(UUID id, BigDecimal valor) {
-        Conta conta = getContaById(id);
+    public void creditarConta(UUID id, BigDecimal valor){
+        Conta conta = getById(id);
         BigDecimal saldo = conta.getSaldo().add(valor);
         updateSaldo(id, saldo);
     }
 
 
     @Override
-    public void validarAlteracaoSaldo(RecebedorPixMensagem recebedorPixMensagem) {
+    public void validarAlteracaoSaldo(RecebedorPixMensagem recebedorPixMensagem){
         if (recebedorPixMensagem.getPixRealizado())
             creditarConta(UUID.fromString(recebedorPixMensagem.getTransactionId()), new BigDecimal(recebedorPixMensagem.getValorTransferencia()));
-        debitarConta(UUID.fromString(recebedorPixMensagem.getTransactionId()), new BigDecimal(recebedorPixMensagem.getValorTransferencia()));
-
+//        debitarConta(UUID.fromString(recebedorPixMensagem.getTransactionId()), new BigDecimal(recebedorPixMensagem.getValorTransferencia()));
     }
 
 }

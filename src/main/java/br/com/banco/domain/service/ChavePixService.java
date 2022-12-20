@@ -5,6 +5,7 @@ import br.com.banco.adapter.out.db.repository.ChavePixRepository;
 import br.com.banco.domain.dto.ChavePixMensagem;
 import br.com.banco.domain.dto.ChavePixRequest;
 import br.com.banco.domain.dto.ChavePixResponse;
+import br.com.banco.domain.dto.TransacaoPixRequest;
 import br.com.banco.domain.exceptions.ChavePixAlreadyExistException;
 import br.com.banco.domain.exceptions.ChavePixNotFoundException;
 import br.com.banco.domain.model.ChavePix;
@@ -13,6 +14,8 @@ import br.com.banco.port.out.CadastroChavePixOutput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -43,7 +46,7 @@ public class ChavePixService implements CadastroChavePixInput{
 
     }
 
-    public void validarExistenciaChaveDestinoPixBacen(TransacaoPixRequest transacaoPixRequest) {
+    public void validarExistenciaChaveDestinoPixBacen(TransacaoPixRequest transacaoPixRequest){
         var responseApiBacen = apiBacen.chavePixExists(transacaoPixRequest.getChaveDestino());
         log.info("# Retorno API Bacen: {}", responseApiBacen);
         if (!responseApiBacen.isChaveExists())
@@ -79,12 +82,12 @@ public class ChavePixService implements CadastroChavePixInput{
         return new ChavePixResponse(chavePix);
     }
 
-    public void delete(UUID chavePixId) {
+    public void delete(UUID chavePixId){
         ChavePix chavePix = findById(chavePixId);
         chavePixRepository.delete(chavePix);
     }
 
-    private ChavePix findById(UUID chavePixId) {
+    private ChavePix findById(UUID chavePixId){
         return chavePixRepository.findById(chavePixId)
                 .orElseThrow(() -> new ChavePixNotFoundException("Chave Pix não encontrada!"));
     }

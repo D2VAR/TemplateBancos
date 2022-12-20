@@ -9,6 +9,22 @@ bacen:
     route: bacen:8080
 
 spring:
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+            required: 'true'
+          ssl:
+            enable: 'false'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: eaglegamesfs@gmail.com
+    password: qkjbmmzxlcdchjvw
+    test-connection: 'true'
+    port: '587'
+
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

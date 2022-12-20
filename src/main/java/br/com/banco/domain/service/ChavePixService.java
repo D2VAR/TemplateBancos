@@ -5,6 +5,7 @@ import br.com.banco.adapter.out.db.repository.ChavePixRepository;
 import br.com.banco.domain.dto.ChavePixMensagem;
 import br.com.banco.domain.dto.ChavePixRequest;
 import br.com.banco.domain.dto.ChavePixResponse;
+import br.com.banco.domain.enums.TipoChave;
 import br.com.banco.domain.exceptions.ChavePixAlreadyExistException;
 import br.com.banco.domain.exceptions.ChavePixNotFoundException;
 import br.com.banco.domain.model.ChavePix;

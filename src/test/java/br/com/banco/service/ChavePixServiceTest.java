@@ -92,6 +92,7 @@ public class ChavePixServiceTest {
                 .build();
     }
 
+
     public ApiBacenResponse buildApiBacen() {
         return ApiBacenResponse.builder()
                 .codBanco("123")

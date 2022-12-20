@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransacaoPixMensagem{
+@Builder
+public class TransacaoPixMensagem {
     @JsonProperty("transaction_id")
     private String transactionId;
     @JsonProperty("nome")
@@ -28,7 +29,7 @@ public class TransacaoPixMensagem{
     @JsonProperty("codigo_banco_origem")
     private String codBancoOrigem;
 
-    public TransacaoPixMensagem(TransacaoPix pix){
+    public TransacaoPixMensagem(TransacaoPix pix) {
         this.nome = pix.getName();
         this.cpfCnpj = pix.getCpf();
         this.tipoChave = pix.getTipoChave();

@@ -1,6 +1,6 @@
 package br.com.banco.adapter.out.mail;
 
-import br.com.banco.domain.dto.EmailRequest;
+import br.com.banco.domain.dto.email.EmailRequest;
 import br.com.banco.port.out.NotificationOutputPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

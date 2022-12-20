@@ -1,6 +1,6 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.ChavePixRequest;
+import br.com.banco.domain.dto.chavepix.ChavePixRequest;
 import br.com.banco.domain.service.ChavePixService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

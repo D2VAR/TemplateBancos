@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.conta;
 
 import br.com.banco.domain.model.Conta;
 import br.com.banco.domain.model.Usuario;

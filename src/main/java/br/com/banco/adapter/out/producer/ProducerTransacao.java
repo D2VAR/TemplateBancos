@@ -1,7 +1,8 @@
 package br.com.banco.adapter.out.producer;
 
 
-import br.com.banco.domain.dto.TransacaoPixMensagem;
+import br.com.banco.domain.dto.transacaopix.RetornoTransacaoPixMensagem;
+import br.com.banco.domain.dto.transacaopix.TransacaoPixMensagem;
 import br.com.banco.domain.model.TransacaoPix;
 import br.com.banco.port.out.TransacaoBacenProducerOutputPort;
 import lombok.RequiredArgsConstructor;
@@ -16,27 +17,37 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ProducerTransacao implements TransacaoBacenProducerOutputPort {
+public class ProducerTransacao implements TransacaoBacenProducerOutputPort{
     @Value("${topic.name.pagador}")
     private String topico;
     private final KafkaTemplate<String, TransacaoPixMensagem> kafkaTemplate;
 
 
     @Override
-    public void enviarMensagemTransacaoPix(TransacaoPix transacaoPix) {
+    public void enviarMensagemTransacaoPix(TransacaoPix transacaoPix){
         var mensagem = buildTransacaoPixMensagem(transacaoPix);
         sendTransacaoPixMensagemToKafka(mensagem);
 
     }
 
-    private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem) {
+    @Override
+    public void enviarMensagemErroValidacaoPix(RetornoTransacaoPixMensagem mensagem){
+
+    }
+
+    @Override
+    public void enviarMensagemSucessoValidacaoPix(RetornoTransacaoPixMensagem mensagem){
+
+    }
+
+    private void sendTransacaoPixMensagemToKafka(TransacaoPixMensagem mensagem){
         kafkaTemplate.send(topico, mensagem);
         log.info("## Mensagem de transacao de Pix enviada ao BACEN - Transaction Id: {}, Chave: {}",
                 mensagem.getTransactionId(), mensagem.getChaveDestino());
         kafkaTemplate.flush();
     }
 
-    private TransacaoPixMensagem buildTransacaoPixMensagem(TransacaoPix transacaoPix) {
+    private TransacaoPixMensagem buildTransacaoPixMensagem(TransacaoPix transacaoPix){
         var mensagem = new TransacaoPixMensagem(transacaoPix);
         mensagem.setTransactionId(UUID.randomUUID().toString());
         return mensagem;

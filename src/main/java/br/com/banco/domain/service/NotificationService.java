@@ -1,7 +1,8 @@
 package br.com.banco.domain.service;
 
-import br.com.banco.domain.dto.ChavePixMensagem;
-import br.com.banco.domain.dto.EmailRequest;
+import br.com.banco.domain.dto.chavepix.ChavePixMensagem;
+import br.com.banco.domain.dto.email.EmailRequest;
+import br.com.banco.domain.dto.transacaopix.RetornoTransacaoPixMensagem;
 import br.com.banco.port.in.NotificationInputPort;
 import br.com.banco.port.out.NotificationOutputPort;
 import lombok.RequiredArgsConstructor;
@@ -93,5 +94,75 @@ public class NotificationService implements NotificationInputPort{
                 mensagem.getNome(),
                 mensagem.getTipoChave(),
                 mensagem.getValorChave());
+    }
+
+    @Override
+    public void sendSuccessTransacaoPixEmail(RetornoTransacaoPixMensagem mensagem){
+        var email = buildTransacaoSuccessEmailRequest(mensagem);
+        outputPort.sendEmail(email);
+    }
+
+    private EmailRequest buildTransacaoSuccessEmailRequest(RetornoTransacaoPixMensagem mensagem){
+        var email = buildTransferBaseEmailRequest(mensagem);
+        setEmailSubject(email, "Pix enviado com sucesso!");
+        setEmailContent(email, generateSuccessTransferMessage(mensagem));
+        return email;
+    }
+
+    private EmailRequest buildTransferBaseEmailRequest(RetornoTransacaoPixMensagem mensagem){
+        var usuario = usuarioService.getUsuario(mensagem.getCpfCnpj());
+        return EmailRequest.builder()
+                .to(usuario.getEmail())
+                .from(fromEmail)
+                .build();
+    }
+
+    private String generateSuccessTransferMessage(RetornoTransacaoPixMensagem mensagem){
+        return String.format("""
+                        <h2><code>Maravilha %s!</code></h2>
+                                                
+                        <pre>
+                        <code>Seu PIX para a chave: <strong>%s</strong> de valor <strong>%s</strong>, foi enviado!
+                        <code>
+                                                
+                        Atenciosamente,
+                        equipe Ita&uacute; Unibanco.</code>
+                        </pre>
+                        """,
+                mensagem.getNome(),
+                mensagem.getChaveDestino(),
+                mensagem.getValor());
+    }
+
+    @Override
+    public void sendFailureTransacaoPixEmail(RetornoTransacaoPixMensagem mensagem){
+        var email = buildTransacaoFailureEmailRequest(mensagem);
+        outputPort.sendEmail(email);
+    }
+
+    private EmailRequest buildTransacaoFailureEmailRequest(RetornoTransacaoPixMensagem mensagem){
+        var email = buildTransferBaseEmailRequest(mensagem);
+        setEmailSubject(email, "Erro no envio do pix!");
+        setEmailContent(email, generateFailureTransferMessage(mensagem));
+        return email;
+    }
+
+    private String generateFailureTransferMessage(RetornoTransacaoPixMensagem mensagem){
+        return String.format("""
+                        <h2><code>Que pena, %s!</code></h2>
+                                                
+                        <pre>
+                        <code>Seu PIX para a chave: <strong>%s</strong> de valor <strong>%s</strong>, n&atilde;o foi enviado corretamente!
+                                                
+                        Mas n&atilde;o se preocupe! J&acute devolvemos seu dinheiro!
+                        <code>
+                                                
+                        Atenciosamente,
+                        equipe Ita&uacute; Unibanco.</code>
+                        </pre>
+                        """,
+                mensagem.getNome(),
+                mensagem.getChaveDestino(),
+                mensagem.getValor());
     }
 }

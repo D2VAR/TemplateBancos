@@ -1,6 +1,6 @@
 package br.com.banco.adapter.in.consumer;
 
-import br.com.banco.domain.dto.ChavePixMensagem;
+import br.com.banco.domain.dto.chavepix.ChavePixMensagem;
 import br.com.banco.port.in.CadastroChavePixInput;
 import br.com.banco.port.in.NotificationInputPort;
 import com.fasterxml.jackson.core.JsonProcessingException;

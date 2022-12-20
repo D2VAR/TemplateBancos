@@ -1,7 +1,7 @@
 package br.com.banco.adapter.in.controller;
 
-import br.com.banco.domain.dto.UsuarioRequest;
-import br.com.banco.domain.dto.UsuarioResponse;
+import br.com.banco.domain.dto.usuario.UsuarioRequest;
+import br.com.banco.domain.dto.usuario.UsuarioResponse;
 import br.com.banco.domain.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

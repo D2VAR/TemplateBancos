@@ -1,8 +1,8 @@
 package br.com.banco.domain.service;
 
 import br.com.banco.adapter.out.db.repository.UsuarioRepository;
-import br.com.banco.domain.dto.UsuarioRequest;
-import br.com.banco.domain.dto.UsuarioResponse;
+import br.com.banco.domain.dto.usuario.UsuarioRequest;
+import br.com.banco.domain.dto.usuario.UsuarioResponse;
 import br.com.banco.domain.exceptions.UsuarioNotFoundException;
 import br.com.banco.domain.model.Usuario;
 import lombok.RequiredArgsConstructor;

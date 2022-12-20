@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.usuario;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsuarioRequest {
+public class UsuarioRequest{
     private String cpf;
     private String nome;
     private String telefone;

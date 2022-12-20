@@ -1,4 +1,4 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.conta;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

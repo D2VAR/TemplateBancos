@@ -1,8 +1,8 @@
 package br.com.banco.service;
 
 import br.com.banco.adapter.out.db.repository.ContaRepository;
-import br.com.banco.domain.dto.ContaRequest;
-import br.com.banco.domain.dto.ContaResponse;
+import br.com.banco.domain.dto.conta.ContaRequest;
+import br.com.banco.domain.dto.conta.ContaResponse;
 import br.com.banco.domain.exceptions.ContaNotFoundException;
 import br.com.banco.domain.model.Conta;
 import br.com.banco.domain.model.Usuario;
@@ -23,19 +23,16 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-public class ContaServiceTest {
-
+class ContaServiceTest{
     @Mock
     private ContaRepository repository;
-
-
     @Mock
     private UsuarioService usuarioService;
     @InjectMocks
     private ContaService service;
 
 
-    private Conta buildContaResponse() {
+    private Conta buildContaResponse(){
         return Conta.builder()
                 .id(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"))
                 .agencia("125165")
@@ -44,7 +41,7 @@ public class ContaServiceTest {
                 .build();
     }
 
-    private Usuario buildUsuario() {
+    private Usuario buildUsuario(){
         return Usuario.builder()
                 .id(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"))
                 .nome("Joao")
@@ -52,7 +49,7 @@ public class ContaServiceTest {
                 .build();
     }
 
-    private ContaRequest buildContaRequest() {
+    private ContaRequest buildContaRequest(){
         return ContaRequest.builder()
                 .idUsuario(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e"))
                 .agencia("125165")
@@ -61,10 +58,10 @@ public class ContaServiceTest {
 
 
     @Test
-    public void getContaByIdTest() {
+    void getContaByIdTest(){
         when(repository.findById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889")))
                 .thenReturn(Optional.of(buildContaResponse()));
-        Conta result = service.getContaById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
+        Conta result = service.getById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
 
         verify(repository, times(1))
                 .findById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
@@ -73,18 +70,18 @@ public class ContaServiceTest {
     }
 
     @Test
-    public void getContaByIdExcepitionTest() {
+    void getByIdExceptionTest(){
         when(repository.findById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889")))
                 .thenReturn(Optional.empty());
-        ContaNotFoundException ex = Assertions.assertThrows(ContaNotFoundException.class, () -> {
-            service.getContaById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
-        });
-        assertEquals("Conta nao encontrada!", ex.getMessage());
+        ContaNotFoundException ex = Assertions.assertThrows(ContaNotFoundException.class, () ->
+                service.getById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"))
+        );
+        assertEquals("Conta não encontrada!", ex.getMessage());
 
     }
 
     @Test
-    public void deleteContaTest() {
+    void deleteContaTest(){
         when(repository.findById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889")))
                 .thenReturn(Optional.of(buildContaResponse()));
         service.deleteConta(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
@@ -93,17 +90,17 @@ public class ContaServiceTest {
     }
 
     @Test
-    public void getDadosContaTest() {
+    void getDadosContaTest(){
         when(repository.findById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889")))
                 .thenReturn(Optional.of(buildContaResponse()));
-        ContaResponse result = service.getDadosConta(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
+        ContaResponse result = service.getContaResponseById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
         verify(repository, times(1))
                 .findById(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"));
         assertEquals(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"), result.getId());
     }
 
     @Test
-    public void saveContaTest() {
+    void saveContaTest(){
 
         when(usuarioService.getUsuariobyId(UUID.fromString("ae976368-92a7-47bf-ad0d-867ca36e821e")))
                 .thenReturn(buildUsuario());
@@ -114,10 +111,10 @@ public class ContaServiceTest {
     }
 
     @Test
-    public void getContaByAgenciaAndNumeroTest() {
+    void getContaByAgenciaAndNumeroTest(){
         when(repository.findByAgenciaAndNumero("125165", "1215456"))
                 .thenReturn(Optional.of(buildContaResponse()));
-        Conta result = service.getContaByAgenciaAndNumero("125165", "1215456");
+        Conta result = service.getByAgenciaAndNumero("125165", "1215456");
         verify(repository, times(1))
                 .findByAgenciaAndNumero("125165", "1215456");
         assertEquals(UUID.fromString("2cc89acb-0522-4768-92cb-459d3482f889"), result.getId());

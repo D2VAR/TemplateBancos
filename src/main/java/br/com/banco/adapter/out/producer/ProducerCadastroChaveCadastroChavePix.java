@@ -1,7 +1,7 @@
 package br.com.banco.adapter.out.producer;
 
 
-import br.com.banco.domain.dto.ChavePixMensagem;
+import br.com.banco.domain.dto.chavepix.ChavePixMensagem;
 import br.com.banco.domain.model.ChavePix;
 import br.com.banco.port.out.CadastroChavePixOutput;
 import lombok.RequiredArgsConstructor;

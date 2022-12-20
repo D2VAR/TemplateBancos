@@ -1,15 +1,17 @@
-package br.com.banco.domain.dto;
+package br.com.banco.domain.dto.transacaopix;
 
 import br.com.banco.domain.enums.TipoChave;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class RecebedorPixMensagem {
+public class RecebedorPixMensagem{
     @JsonProperty("transaction_id")
     private String transactionId;
     @JsonProperty("codigo_banco_origem")
@@ -23,9 +25,9 @@ public class RecebedorPixMensagem {
     @JsonProperty("chave_destino")
     private String chaveDestino;
     @JsonProperty("valor_transferencia")
-    private String valorTransferencia;
+    private BigDecimal valorTransferencia;
     @JsonProperty("pix_realizado")
-    private Boolean pixRealizado;
+    private boolean pixRealizado;
 
 
 }

@@ -1,7 +1,7 @@
 package br.com.banco.adapter.in.consumer;
 
-import br.com.banco.domain.dto.RecebedorPixMensagem;
-import br.com.banco.port.in.RecebedorPixInputPort;
+import br.com.banco.domain.dto.transacaopix.RecebedorPixMensagem;
+import br.com.banco.port.in.PixReceiver;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class RecebedorPixConsumer{
-    private final RecebedorPixInputPort inputPort;
+    private final PixReceiver inputPort;
 
     @KafkaListener(id = "${spring.kafka.consumer.group-id.success}", topics = "${topic.fim.transacao.pix.success}")
     public void listenSuccess(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
             var recebedorPixMensagem = processConsumerRecord(mensagemKafka);
-            inputPort.validarAlteracaoSaldo(recebedorPixMensagem);
+            inputPort.verificarRecebimentoPix(recebedorPixMensagem);
 
         } catch (Exception ex){
             log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
@@ -35,7 +35,7 @@ public class RecebedorPixConsumer{
     public void listenFail(ConsumerRecord<String, String> mensagemKafka, Acknowledgment ack){
         try{
             var recebedorPixMessagem = processConsumerRecord(mensagemKafka);
-            inputPort.validarAlteracaoSaldo(recebedorPixMessagem);
+            inputPort.verificarRecebimentoPix(recebedorPixMessagem);
         } catch (Exception ex){
             log.error("#### Erro Consumer Mensagem -> {},{}", ex.getMessage(), ex.getStackTrace());
         } finally{
